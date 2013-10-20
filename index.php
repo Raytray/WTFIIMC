@@ -1,5 +1,6 @@
 <?php
 require 'flight/Flight.php';
+require 'php/events.php'
 
 Flight::route('/', function(){
         Flight::render('index', array('title' => 'Index'));
