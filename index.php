@@ -2,7 +2,11 @@
 require 'flight/Flight.php';
 
 Flight::route('/', function(){
-    echo 'hello world!';
+    include('php/index.php');
+});
+
+Flight::route('/event', function(){
+	echo "Events";
 });
 
 Flight::start();
