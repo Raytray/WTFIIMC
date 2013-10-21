@@ -2,11 +2,11 @@
 require 'flight/Flight.php';
 
 Flight::route('/', function(){
-    include('php/index.php');
+        Flight::render('index', array('title' => ''));
 });
 
 Flight::route('/event', function(){
-	echo "Events";
+        echo "Events";
 });
 
 Flight::start();
