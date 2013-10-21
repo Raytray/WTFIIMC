@@ -9,20 +9,22 @@
 
         <script>
             $(document).ready(function(){
-            $("#submitevent").click(function(){
-            $.ajax({
-            url:'php/newevent.php',
-            data:{name:$('#name').val(), event_info:$('#eventinfo').val(), date_start:$('#start').val(), date_end:$('#end').val()},
-            success: function(data){
-            $('#results').html(data);
-            $('#name').val("");
-            $('#eventinfo').val("");
-            $('#start').val("");
-            $('#end').val("");
-            }
-            });
-            });
-
+                $("#submitevent").click(function(){
+                    $.ajax({
+                        method: 'POST',
+                        url: 'php/newevent.php',
+                        data: $('#event_insert').serialize(),
+                        success: function(data){
+                            $('#results').html(data);
+                            $('#name').val("");
+                            $('#event_info').val("");
+                            $('#start_datetime').val("");
+                            $('#end_datetime').val("");
+                            alert("Success!");
+                       }
+                    });
+                    return false;
+                });
             });
         </script>
     </head>
@@ -33,12 +35,14 @@
             <h1>Who The Fox Is In My Car</h1>
             <p>
                 <b>Create a new event:</b><br>
-                Event name: <input id="name" type="text" /><br>
+                <form id="event_insert">
+                Event name: <input name="name" type="text" /><br>
                 Event description: <br>
-                <textarea id="eventinfo" type="text"></textarea><br>
-                Start Date: <input id="start" type="text" /><br>
-                End Date: <input id="end" type="text" /><br>
-                <button type="button" id="submitevent">Create Event!</button>
+                <textarea style='margin: 0px; width: 262px; height: 130px;' name="event_info" type="text"></textarea><br>
+                Start Date: <input name="start_datetime" type="text" /><br>
+                End Date: <input name="end_datetime" type="text" /><br>
+                <input type="submit" id="submitevent" value="Create Event!">
+                </form>
             </p>
             <div id="results"></div>
 

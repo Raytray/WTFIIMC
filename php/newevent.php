@@ -9,10 +9,10 @@ if (mysqli_connect_error()) {
     return null;
 }
 //echo "connect successful";
-$name = $_GET['name'];
-$eventinfo = $_GET['event_info'];
-$start = $_GET['date_start'];
-$end = $_GET['date_end'];
+$name = $_POST['name'];
+$eventinfo = $_POST['event_info'];
+$start = $_POST['start_datetime'];
+$end = $_POST['end_datetime'];
 
 if(isset($name)){
     $ins_stmt = $db_connection->stmt_init();
