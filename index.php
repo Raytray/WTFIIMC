@@ -10,7 +10,7 @@ Flight::route('/participants', function(){
 });
 
 Flight::route('/events/@id', function($id){
-        echo "events: " . $id;
+        Flight::render('events', array('title' => 'Events', 'event_id' => $id));
 });
 
 Flight::start();
