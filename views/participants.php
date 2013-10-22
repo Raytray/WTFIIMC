@@ -49,7 +49,8 @@
                           while($row = mysqli_fetch_array($results)) {
                               echo '<option value="' . $row['id'] . '">' . $row['name'] . '</option>';
                           }
-                             ?>
+                          mysqli_close($db_connection);
+                        ?>
                 </select>
                 <br>
                 Start Date: <input name="start_datetime" type="text" /><br>
