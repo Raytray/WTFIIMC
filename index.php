@@ -1,6 +1,5 @@
 <?php
 require 'flight/Flight.php';
-require 'php/events.php'
 
 Flight::route('/', function(){
         Flight::render('index', array('title' => 'Index'));
@@ -8,6 +7,10 @@ Flight::route('/', function(){
 
 Flight::route('/participants', function(){
         Flight::render('participants', array('title' => 'Participants'));
+});
+
+Flight::route('/events', function(){
+        Flight::render('list', array('title' => 'Events list'));
 });
 
 Flight::route('/events/@id', function($id){

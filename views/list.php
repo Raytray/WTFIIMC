@@ -41,7 +41,7 @@
                           $results = mysqli_query($db_connection, $sql);
                           echo '<ol>';
                           while($row = mysqli_fetch_array($results)) {
-                              echo '<li><a href=/event/' . $row['id'] . '>' . $row['name'] . '</li>';
+                              echo '<li><a href=/~cs4720f13cucumber/events/' . $row['id'] . '>' . $row['name'] . '</li>';
                           }
                           echo '</ol>';
                           mysqli_close($db_connection);
