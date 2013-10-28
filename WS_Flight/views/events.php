@@ -1,21 +1,22 @@
 <html>
     <head>
         <title><?php echo $title; ?>|WTFIIMC</title>
-        <link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet">
-        <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
         <link href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" rel="stylesheet">
         <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
         <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+        <link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet">
+        <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
 
         <script>
             $(document).ready(function(){
                 $("#submitevent").click(function(){
                     $.ajax({
                         method: 'POST',
-                        url: 'php/newparticipant.php',
+                        url: '../php/newparticipant.php',
                         data: $('#participants_insert').serialize(),
                         success: function(data){
-                            alert("Success!");
+                           $("#participants_insert")[0].reset();
+                           $("#current_participants").html(data);
                        }
                     });
                     return false;
@@ -54,11 +55,12 @@
                 <br>
                 Start Date: <input name="start_datetime" type="text" /><br>
                 End Date: <input name="end_datetime" type="text" /><br>
-                <input type="submit" id="submitevent" value="Add Participant!">
+                <button type="button" class="btn btn-defualt" id="submitevent">Add Participant!</button>
                 </form>
             </p>
             <p>
                 <b>Current participants:</b><br>
+                <div id="current_participants">
                 <?php
                   include_once('dblogin.php');
                   $db_connection = new mysqli($SERVER, $USER, $PASSWORD, $DB);
@@ -69,13 +71,13 @@
                   }
                   $sql = "SELECT name FROM participants WHERE event = " . $event_id;
                   $results = mysqli_query($db_connection, $sql);
-
+                  echo '<ol>';
                   while($row = mysqli_fetch_array($results)) {
-                      echo $row['name'] . '<br>';
+                      echo '<li>' . $row['name'] . '</li>';
                   }
+                  echo '</ol>';
                   mysqli_close($db_connection);
-                ?>
-            <div id="results"></div>
+                ?></div>
         </div>
     </body>
 </html>
