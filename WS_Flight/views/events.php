@@ -15,7 +15,8 @@
                         url: '../php/newparticipant.php',
                         data: $('#participants_insert').serialize(),
                         success: function(data){
-                            alert("Success!");
+                           $("#participants_insert")[0].reset();
+                           $("#current_participants").html(data);
                        }
                     });
                     return false;
@@ -54,11 +55,12 @@
                 <br>
                 Start Date: <input name="start_datetime" type="text" /><br>
                 End Date: <input name="end_datetime" type="text" /><br>
-                <input type="submit" id="submitevent" value="Add Participant!">
+                <button type="button" class="btn btn-defualt" id="submitevent">Add Participant!</button>
                 </form>
             </p>
             <p>
                 <b>Current participants:</b><br>
+                <div id="current_participants">
                 <?php
                   include_once('dblogin.php');
                   $db_connection = new mysqli($SERVER, $USER, $PASSWORD, $DB);
@@ -75,8 +77,7 @@
                   }
                   echo '</ol>';
                   mysqli_close($db_connection);
-                ?>
-            <div id="results"></div>
+                ?></div>
         </div>
     </body>
 </html>

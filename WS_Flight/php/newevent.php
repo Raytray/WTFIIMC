@@ -25,25 +25,15 @@ if(isset($name)){
 
 $stmt = $db_connection->stmt_init();
 
-/*if($stmt->prepare("SELECT task_id, task_desc, status from todo order by status")) {
-  $stmt->execute();
-  $stmt->bind_result($id, $task, $status);
-  while($stmt->fetch()) {
-  echo '<button type="button" class="del" id="' . $id . '">x</button>';
-  if ($status==0){
-  echo '<button type="button" class="check" id="' . $id . '" status="0">&#x2713;</button>';
-  echo $task . "<br>\n";
-  }
-  else{
-  echo '<button type="button" class="check" id="' . $id . '" status="1">&#x25a2;</button>';
-  echo "<del>" . $task . "</del><br>\n";
-  }
-
-  }
-  }*/
-
 $stmt->close();
 
-$db_connection->close();
+$sql = "SELECT * FROM events";
+$results = mysqli_query($db_connection, $sql);
+echo '<ol>';
+while($row = mysqli_fetch_array($results)) {
+    echo '<li><a href=/~cs4720f13cucumber/events/' . $row['id'] . '>' . $row['name'] . '</li>';
+                  }
+echo '</ol>';
+mysqli_close($db_connection);
 
 ?>

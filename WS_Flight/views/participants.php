@@ -14,7 +14,7 @@
                         url: 'php/newparticipant.php',
                         data: $('#participants_insert').serialize(),
                         success: function(data){
-                            alert("Success!");
+                           $("#participants_insert")[0].reset();
                        }
                     });
                     return false;
@@ -54,10 +54,9 @@
                 <br>
                 Start Date: <input name="start_datetime" type="text" /><br>
                 End Date: <input name="end_datetime" type="text" /><br>
-                <input type="submit" id="submitevent" value="Add Participant!">
+                <button type="button" class="btn btn-defualt" id="submitevent">Add Participant!</button>
                 </form>
             </p>
-            <div id="results"></div>
         </div>
     </body>
 </html>

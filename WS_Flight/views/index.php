@@ -11,15 +11,11 @@
                 $("#submitevent").click(function(){
                     $.ajax({
                         method: 'POST',
-                        url: 'php/newevent.php',
+                        url: '../php/newevent.php',
                         data: $('#event_insert').serialize(),
                         success: function(data){
-                            $('#results').html(data);
-                            $('#name').val("");
-                            $('#event_info').val("");
-                            $('#start_datetime').val("");
-                            $('#end_datetime').val("");
-                            alert("Success!");
+                            $("#event_insert")[0].reset();
+                            $("#current_events").html(data);
                        }
                     });
                     return false;
@@ -45,6 +41,7 @@
             </p>
             <div id="results"></div>
             <p><b>Current events:</b>
+                <div id="current_events">
                 <?php
                   include_once('dblogin.php');
                   $db_connection = new mysqli($SERVER, $USER, $PASSWORD, $DB);
@@ -62,9 +59,8 @@
                   echo '</ol>';
                   mysqli_close($db_connection);
                 ?>
+                </div>
             </p>
-
-
         </div>
     </body>
 
