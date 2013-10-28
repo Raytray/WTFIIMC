@@ -69,10 +69,11 @@
                   }
                   $sql = "SELECT name FROM participants WHERE event = " . $event_id;
                   $results = mysqli_query($db_connection, $sql);
-
+                  echo '<ol>';
                   while($row = mysqli_fetch_array($results)) {
-                      echo $row['name'] . '<br>';
+                      echo '<li>' . $row['name'] . '</li>';
                   }
+                  echo '</ol>';
                   mysqli_close($db_connection);
                 ?>
             <div id="results"></div>

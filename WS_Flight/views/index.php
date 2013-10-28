@@ -45,6 +45,25 @@
                 </form>
             </p>
             <div id="results"></div>
+            <p><b>Current events:</b>
+                <?php
+                  include_once('dblogin.php');
+                  $db_connection = new mysqli($SERVER, $USER, $PASSWORD, $DB);
+                  if (mysqli_connect_error()) {
+                      echo "Can't connect!";
+                      echo "<br>" . mysqli_connect_error();
+                      return null;
+                  }
+                  $sql = "SELECT * FROM events";
+                  $results = mysqli_query($db_connection, $sql);
+                  echo '<ol>';
+                  while($row = mysqli_fetch_array($results)) {
+                      echo '<li><a href=/~cs4720f13cucumber/events/' . $row['id'] . '>' . $row['name'] . '</li>';
+                  }
+                  echo '</ol>';
+                  mysqli_close($db_connection);
+                ?>
+            </p>
 
 
         </div>
