@@ -1,12 +1,35 @@
 <?php
 
-function events(){
+
+
+include_once('dblogin.php');
+
+$db_connection = new mysqli($SERVER, $USER, $PASSWORD, $DB);
+if (mysqli_connect_error()) {
+    echo "Can't connect!";
+    echo "<br>" . mysqli_connect_error();
+    return null;
+}
+//echo "connect successful";
+		$id = $_POST['id'];
+		$sql = "SELECT * FROM events where id";
+		$results = mysqli_query($db_connection, $sql);
+		echo json_encode($results);
+
+if(isset($id)){
 
 }
+else{
+	$sql = "SELECT * FROM events";
+		$results = mysqli_query($db_connection, $sql);
+		echo '<ol>';
+		while($row = mysqli_fetch_array($results)) {
+		  echo '<li><a href=/~cs4720f13cucumber/events/' . $row['id'] . '>' . $row['name'] . '</li>';
+		}
+	  echo '</ol>';
+}
 
-function event($id){
-
-
+mysqli_close($db_connection);
 }
 ?>
 
