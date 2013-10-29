@@ -6,21 +6,6 @@
         <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
         <link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet">
         <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
-        <script>
-            $(document).ready(function(){
-                $("#submitevent").click(function(){
-                    $.ajax({
-                        method: 'POST',
-                        url: 'php/newparticipant.php',
-                        data: $('#participants_insert').serialize(),
-                        success: function(data){
-                            alert("Success!");
-                       }
-                    });
-                    return false;
-                });
-            });
-        </script>
     </head>
 
     <body>
