@@ -1,5 +1,6 @@
 package com.example.wtfiimc;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
 import android.view.Menu;
@@ -9,6 +10,20 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+
+
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
 
 public class MainActivity extends Activity {
 
@@ -20,7 +35,12 @@ public class MainActivity extends Activity {
     private EditText endDate;
     private TextView returnResults;
     private TextView currentEvents;
-	
+    String getResult = "untouched!!";
+    
+    ListView courseList;
+    String webserviceURL = "http://plato.cs.virginia.edu/~cs4720f13cucumber/";
+    
+    
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,7 +55,7 @@ public class MainActivity extends Activity {
         endDate = (EditText)findViewById(R.id.end_date);
         
         currentEvents = (TextView)findViewById(R.id.current_events);
-        getCurrentEvents(currentEvents);
+        getCurrentEvents();
         
         submitButton.setOnClickListener(new OnClickListener() {
         	public void onClick(View v){
@@ -56,9 +76,67 @@ public class MainActivity extends Activity {
         	}
         });
     }
+	private class GetCurrentEvents extends AsyncTask<String, Integer, String> {
+		@Override
+		protected void onPreExecute() {
+		}
+		@Override
+		protected String doInBackground(String... param){
+			String url = param[0];
+			InputStream is = null;
+			String result = "";
+			getResult = "touched once";
+			// http post
+			try {
+				HttpClient httpclient = new DefaultHttpClient();
+				HttpPost httppost = new HttpPost(url);
+				HttpResponse response = httpclient.execute(httppost);
+				HttpEntity entity = response.getEntity();
+				is = entity.getContent();
+				getResult = "touched twice";
+				
 
-	private void getCurrentEvents(TextView tv){
-		tv.setText("hello");
+			} catch (Exception e) {
+				Log.e("LousList", "Error in http connection " + e.toString());
+			}
+
+			// convert response to string
+			try {
+				BufferedReader reader = new BufferedReader(new InputStreamReader(
+						is, "iso-8859-1"), 8);
+				StringBuilder sb = new StringBuilder();
+				String line = null;
+				while ((line = reader.readLine()) != null) {
+					sb.append(line + "\n");
+				}
+				is.close();
+				result = sb.toString();
+			} catch (Exception e) {
+				Log.e("LousList", "Error converting result " + e.toString());
+			}
+			Log.i("Web", result);
+			return result;
+		}
+		@Override
+		protected void onProgressUpdate(Integer... ints) {
+
+		}
+
+		@Override
+		protected void onPostExecute(String result) {
+			// tells the adapter that the underlying data has changed and it
+			// needs to update the view
+			currentEvents.setText(result);
+		}
+	}
+	private void getCurrentEvents(){
+		String url = "http://plato.cs.virginia.edu/~cs4720f13cucumber/";
+		
+		new GetCurrentEvents().execute(url);
+		
+		
+		
+		
 	}
 	private boolean isEmpty(EditText etText) {
         return etText.getText().toString().trim().length() == 0;
