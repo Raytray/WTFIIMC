@@ -31,16 +31,27 @@ Flight::route('GET /api/events', function(){
                 return null;
         }
         $sql = "SELECT * FROM events";
-        $results = mysqli_query($db_connection, $sql);
+        $results_events = mysqli_query($db_connection, $sql);
 
         $json = array();
 
-        while($row = mysqli_fetch_array($results)) {
+        while($row = mysqli_fetch_array($results_events)) {
+
+            $sql_participants = "SELECT name FROM participants WHERE event = " . $row['id'];
+
+            $results_participants = mysqli_query($db_connection, $sql_participants);
+            $participants = array();
+
+            while($row_participants = mysqli_fetch_array($results_participants)){
+                array_push($participants, $row_participants['name']);
+           }
+
             $bus = array('id'=> $row['id'],
                          'name' => $row['name'],
                          'event_info'=> $row['event_info'],
                          'start_datetime' => $row['start_datetime'],
-                         'end_datetime' => $row['end_datetime']);
+                         'end_datetime' => $row['end_datetime'],
+                         'participants' => $participants);
             array_push($json, $bus);
         };
 
@@ -61,7 +72,20 @@ Flight::route('GET /api/event/@id', function($id){
         }
         $sql = "SELECT * FROM events where id=" . $id;
         $results = mysqli_query($db_connection, $sql);
+        while($row = mysqli_fetch_array($results)) {
+            $bus = array('id'=> $row['id'],
+                         'name' => $row['name'],
+                         'event_info'=> $row['event_info'],
+                         'start_datetime' => $row['start_datetime'],
+                         'end_datetime' => $row['end_datetime']);
+            array_push($json, $bus);
+        };
+
         mysqli_close($db_connection);
+
+        $return = array('results' => $json);
+
+        echo json_encode($return);
 });
 
 Flight::route('POST /api/new/event', function(){
