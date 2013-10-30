@@ -1,4 +1,0 @@
-INDEX VERSION 1.126+C:\cygwin64\home\Mingsheng\development\WTFIIMC\Android\.metadata\.plugins\org.eclipse.jdt.core
-974493630.index
-3396101155.index
-4062218571.index
