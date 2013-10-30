@@ -51,7 +51,7 @@ Flight::route('GET /api/events', function(){
         echo json_encode($return);
 });
 
-Flight::route('/api/event/@id', function($id){
+Flight::route('GET /api/event/@id', function($id){
         include_once('php/dblogin.php');
         $db_connection = new mysqli($SERVER, $USER, $PASSWORD, $DB);
         if (mysqli_connect_error()) {
@@ -72,10 +72,13 @@ Flight::route('POST /api/new/event', function(){
                 echo "<br>" . mysqli_connect_error();
                 return null;
         }
-        $name = $_POST['name'];
-        $eventinfo = $_POST['event_info'];
-        $start = $_POST['start_datetime'];
-        $end = $_POST['end_datetime'];
+		$request = Flight::request();
+        $data = $request->data;
+		
+        $name = $data->name;
+        $eventinfo = $data->event_info;
+        $start = $data->start_datetime;
+        $end = $data->end_datetime;
 
         if(isset($name)){
                 $ins_stmt = $db_connection->stmt_init();
@@ -104,15 +107,16 @@ Flight::route('POST /api/new/participant', function(){
                 echo "<br>" . mysqli_connect_error();
                 return null;
         }
-
-        $name = $_POST['name'];
-        $can_drive = $_POST['can_drive'];
-        $seats = $_POST['seats'];
-        $event_id = $_POST['event_id'];
-        $start = $_POST['start_datetime'];
-        $end = $_POST['end_datetime'];
-        $request = Flight::request();
+		$request = Flight::request();
         $data = $request->data;
+		
+        $name = $data->name;
+        $can_drive = $data->can_drive;
+        $seats = $data->seats;
+        $event_id = $data->event_id;
+        $start = $data->start_datetime;
+        $end = $data->end_datetime;
+        
 
         $sql="insert into participants (name, can_drive, seats, event, start_datetime, end_datetime) values ('$name', '$can_drive', '$seats', '$event_id', '$start', '$end')";
 
