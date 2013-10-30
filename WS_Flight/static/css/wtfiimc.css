@@ -1,0 +1,20 @@
+.container {
+  width: 900px;
+  margin: auto;
+}
+.left_box {
+  width: 400px;
+  height: 800px;
+  border-width: 1px;
+  border-style: solid;
+  display: inline;
+  margin-right: 25px;
+}
+.right_box {
+  width: 400px;
+  height: 800px;
+  border-width: 1px;
+  border-style: solid;
+  display: inline;
+  margin-left: 25px;
+}
