@@ -22,7 +22,7 @@ Flight::route('/events/@id', function($id){
         Flight::render('events', array('title' => 'Events', 'event_id' => $id));
 });
 
-Flight::route('GET /api/events', function(){
+Flight::route('GET /api/event/(@id)', function($id = NULL){
         include_once('php/dblogin.php');
         $db_connection = new mysqli($SERVER, $USER, $PASSWORD, $DB);
         if (mysqli_connect_error()) {
@@ -30,7 +30,13 @@ Flight::route('GET /api/events', function(){
                 echo "<br>" . mysqli_connect_error();
                 return null;
         }
-        $sql = "SELECT * FROM events";
+        $sql = "";
+        if ($id == NULL) {
+            $sql = "SELECT * FROM events";
+        }
+        else {
+            $sql = "SELECT * FROM events WHERE id = " . $id;
+        }
         $results_events = mysqli_query($db_connection, $sql);
 
         $json = array();
@@ -52,32 +58,6 @@ Flight::route('GET /api/events', function(){
                          'start_datetime' => $row['start_datetime'],
                          'end_datetime' => $row['end_datetime'],
                          'participants' => $participants);
-            array_push($json, $bus);
-        };
-
-        mysqli_close($db_connection);
-
-        $return = array('results' => $json);
-
-        echo json_encode($return);
-});
-
-Flight::route('GET /api/event/@id', function($id){
-        include_once('php/dblogin.php');
-        $db_connection = new mysqli($SERVER, $USER, $PASSWORD, $DB);
-        if (mysqli_connect_error()) {
-                        echo "Can't connect!";
-                        echo "<br>" . mysqli_connect_error();
-                        return null;
-        }
-        $sql = "SELECT * FROM events where id=" . $id;
-        $results = mysqli_query($db_connection, $sql);
-        while($row = mysqli_fetch_array($results)) {
-            $bus = array('id'=> $row['id'],
-                         'name' => $row['name'],
-                         'event_info'=> $row['event_info'],
-                         'start_datetime' => $row['start_datetime'],
-                         'end_datetime' => $row['end_datetime']);
             array_push($json, $bus);
         };
 
