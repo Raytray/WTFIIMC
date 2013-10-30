@@ -1,11 +1,6 @@
 <?php
 require 'flight/Flight.php';
 
-function getEvents(){
-
-}
-
-
 Flight::route('/', function(){
         Flight::render('index', array('title' => 'Index'));
 });
@@ -97,8 +92,6 @@ Flight::route('POST /api/new/event', function(){
 
         $stmt->close();
 
-        $sql = "SELECT * FROM events";
-        $results = mysqli_query($db_connection, $sql);
         mysqli_close($db_connection);
 });
 
@@ -125,8 +118,6 @@ Flight::route('POST /api/new/participant', function(){
         $sql="insert into participants (name, can_drive, seats, event, start_datetime, end_datetime) values ('$name', '$can_drive', '$seats', '$event_id', '$start', '$end')";
 
         $result = mysqli_query($db_connection, $sql);
-        $sql = "SELECT name FROM participants WHERE event = " . $event_id;
-        $results = mysqli_query($db_connection, $sql);
         mysqli_close($db_connection);
 });
 
