@@ -4,17 +4,17 @@
 }
 .left_box {
   width: 400px;
-  height: 800px;
+  height: 400px;
   border-width: 1px;
   border-style: solid;
-  display: inline;
+  display: inline-block;
   margin-right: 25px;
 }
 .right_box {
   width: 400px;
-  height: 800px;
+  height: 400px;
   border-width: 1px;
   border-style: solid;
-  display: inline;
+  display: inline-block;
   margin-left: 25px;
 }
