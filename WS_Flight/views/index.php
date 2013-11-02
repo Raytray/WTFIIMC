@@ -7,6 +7,9 @@
         <link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet">
         <link href="static/css/wtfiimc.css" rel="stylesheet">
         <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+        <script src="static/js/timepicker.js"></script>
+        <link href="static/css/wtfiimc.css" rel="stylesheet">
+
         <script>
             $(document).ready(function(){
                 $("#submitevent").click(function(){
@@ -36,8 +39,8 @@
                         Event name: <input name="name" type="text" /><br>
                         Event description: <br>
                         <textarea style='margin: 0px; width: 262px; height: 130px;' name="event_info" type="text"></textarea><br>
-                        Start Date: <input name="start_datetime" type="text" /><br>
-                        End Date: <input name="end_datetime" type="text" /><br>
+                        Start Date: <input id='start_datetime' name="start_datetime" type="text" /><br>
+                        End Date: <input id ='end_datetime' name="end_datetime" type="text" /><br>
                         <button type="button" class="btn btn-defualt" id="submitevent">Create Event!</button>
                     </form>
                 </p>
@@ -67,5 +70,8 @@
             </div>
         </div>
     </body>
-
 </html>
+<script>
+                          $('#start_datetime').datetimepicker();
+                          $('#end_datetime').datetimepicker();
+</script>
