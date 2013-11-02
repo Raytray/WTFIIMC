@@ -38,14 +38,19 @@ Flight::route('GET /api/event(/(@id))', function($id = NULL){
 
         while($row = mysqli_fetch_array($results_events)) {
 
-            $sql_participants = "SELECT name FROM participants WHERE event = " . $row['id'];
+            $sql_participants = "SELECT name, can_drive, seats, start_datetime, end_datetime FROM participants WHERE event = " . $row['id'];
 
             $results_participants = mysqli_query($db_connection, $sql_participants);
             $participants = array();
 
             while($row_participants = mysqli_fetch_array($results_participants)){
-                array_push($participants, $row_participants['name']);
-           }
+                $participant_obj = array('name' => $row_participants['name'],
+                                         'can_drive' => $row_participants['can_drive'],
+                                         'seats' => $row_participants['seats'],
+                                         'start_datetime' => $row_participants['start_datetime'],
+                                         'end_datetime' => $row_participants['end_datetime']);
+                array_push($participants, $participant_obj);
+            }
 
             $bus = array('id'=> $row['id'],
                          'name' => $row['name'],
@@ -71,9 +76,8 @@ Flight::route('POST /api/new/event', function(){
                 echo "<br>" . mysqli_connect_error();
                 return null;
         }
-		$request = Flight::request();
+        $request = Flight::request();
         $data = $request->data;
-		
         $name = $data->name;
         $eventinfo = $data->event_info;
         $start = $data->start_datetime;
@@ -104,16 +108,15 @@ Flight::route('POST /api/new/participant', function(){
                 echo "<br>" . mysqli_connect_error();
                 return null;
         }
-		$request = Flight::request();
+
+        $request = Flight::request();
         $data = $request->data;
-		
         $name = $data->name;
         $can_drive = $data->can_drive;
         $seats = $data->seats;
         $event_id = $data->event_id;
         $start = $data->start_datetime;
         $end = $data->end_datetime;
-        
 
         $sql="insert into participants (name, can_drive, seats, event, start_datetime, end_datetime) values ('$name', '$can_drive', '$seats', '$event_id', '$start', '$end')";
 
