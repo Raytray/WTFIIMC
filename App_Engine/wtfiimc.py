@@ -18,7 +18,7 @@ class event_API(webapp2.RequestHandler):
         event_id = self.request.get('id')
         schedule = get_schedule(event_id)
 
-        self.response.headers['Content-Type'] = 'text/plain'
+        self.response.headers['Content-Type'] = 'application/json'
         self.response.write(schedule)
 
 
@@ -26,22 +26,33 @@ def get_schedule(event_id):
     event_resource = get_events(event_id)
 
     drivers = [participant for participant in
-               event_resource['participants'] if participant['can_drive']]
+               event_resource['results'][0]['participants']
+               if int(participant['can_drive'])]
     riders = [participant for participant in
-             event_resource['participants'] if not participant['can_drive']]
+             event_resource['results'][0]['participants']
+              if not int(participant['can_drive'])]
 
-    # Do a check for more riders than seats available (len(rider) > sum([driver['seats'] for driver in drivers]) or something like that.
-    # Do other checks as necessary (more drivers than needed, no riders, no drivers, etc. Special cases? How do we deal with this dynamically?
+    # Error checks
+    if (len(riders) > sum([int(driver['seats']) for driver in drivers])):
+        return json.dumps({"Error": "More riders than seats available."})
 
-    riders_sorted = sorted(riders, key=lambda rider: rider['end_datetime'], reverse=True) # I think reverse=True should set it to end first comes up first. If not, just remove ', reverse=True'
+    # Do other checks as necessary (more drivers than needed, no riders,
+    # no drivers, etc. Special cases? How do we deal with this dynamically?
+
+    riders_sorted = sorted(riders,
+                           key=lambda rider: rider['end_datetime'],
+                           reverse = True)
 
     for driver in drivers:
-        while driver['seats'] > len(driver['riders']):
-            driver['riders'] = rider.pop() # take rider from the end of the list
+        driver.setdefault('riders', [])
+        driver['seats'] = int(driver['seats'])
+        while (driver['seats'] > len(driver['riders']) and
+               len(riders_sorted) > 0):
+            driver['riders'].append(riders_sorted.pop())
 
     # Do a final check to see all driver have riders, else, stick them into someone elses car if there is space, or a car full of drivers?
 
-    return participants
+    return json.dumps({"Error": None, "Groups": drivers})
 
 
 def get_events(event_id=None):
