@@ -39,11 +39,22 @@ def get_schedule(event_id):
     # Do other checks as necessary (more drivers than needed, no riders,
     # no drivers, etc. Special cases? How do we deal with this dynamically?
 
+    drivers_sorted = sorted(drivers,
+                            key=lambda driver: driver['seats'],
+                            reverse = True)
+
+    while len(riders) <= sum([int(driver['seats']) for driver in drivers_sorted]):
+        riders.append(drivers_sorted.pop())
+
+    if (len(riders) > sum([int(driver['seats']) for driver in drivers_sorted])):
+        drivers_sorted.append(riders.pop())
+
     riders_sorted = sorted(riders,
                            key=lambda rider: rider['end_datetime'],
                            reverse = True)
 
-    for driver in drivers:
+
+    for driver in drivers_sorted:
         driver.setdefault('riders', [])
         driver['seats'] = int(driver['seats'])
         while (driver['seats'] > len(driver['riders']) and
@@ -52,7 +63,7 @@ def get_schedule(event_id):
 
     # Do a final check to see all driver have riders, else, stick them into someone elses car if there is space, or a car full of drivers?
 
-    return json.dumps({"Error": None, "Groups": drivers})
+    return json.dumps({"Error": None, "Groups": drivers_sorted})
 
 
 def get_events(event_id=None):
