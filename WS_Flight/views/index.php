@@ -68,9 +68,9 @@
                 </p>
             </div>
         </div>
-    </body>
-</html>
-<script>
+                          <script>
                           $('#start_datetime').datetimepicker();
                           $('#end_datetime').datetimepicker();
-</script>
+                          </script>
+    </body>
+</html>

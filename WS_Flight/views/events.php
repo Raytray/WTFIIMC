@@ -6,6 +6,8 @@
         <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
         <link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet">
         <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+        <script src="static/js/timepicker.js"></script>
+        <link href="static/css/wtfiimc.css" rel="stylesheet">
 
         <script>
             $(document).ready(function(){
@@ -82,8 +84,45 @@
                           }
                           echo '</ol>';
                           mysqli_close($db_connection);
-                        ?></div>
-            </div>
+                        ?>
+                </select>
+                <br>
+                Start Date: <input name="start_datetime" type="text" /><br>
+                End Date: <input name="end_datetime" type="text" /><br>
+                <button type="button" class="btn btn-defualt" id="submitevent">Add Participant!</button>
+                </form>
+            </p>
+            <p>
+                <b>Current participants:</b><br>
+                <div id="current_participants">
+                <?php
+                  include_once('dblogin.php');
+                  $db_connection = new mysqli($SERVER, $USER, $PASSWORD, $DB);
+                  if (mysqli_connect_error()) {
+                      echo "Can't connect!";
+                      echo "<br>" . mysqli_connect_error();
+                      return null;
+                  }
+                  $sql = "SELECT name FROM participants WHERE event = " . $event_id;
+                  $results = mysqli_query($db_connection, $sql);
+                  echo '<ol>';
+                  while($row = mysqli_fetch_array($results)) {
+                      echo '<li>' . $row['name'] . '</li>';
+                  }
+                  echo '</ol>';
+                  mysqli_close($db_connection);
+                ?></div>
+            </p>
+            <p>
+                <b>Current arrangement</b><br>
+                <div id="current_arrangement">
+
+                </div>
+            </p>
         </div>
+                  <script>
+                  $('#start_datetime').datetimepicker();
+                  $('#end_datetime').datetimepicker();
+                  </script>
     </body>
 </html>
