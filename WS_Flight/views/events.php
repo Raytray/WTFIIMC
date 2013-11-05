@@ -6,8 +6,7 @@
         <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
         <link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet">
         <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
-        <script src="static/js/timepicker.js"></script>
-        <link href="static/css/wtfiimc.css" rel="stylesheet">
+        <script src="../static/js/timepicker.js"></script>
 
         <script>
             $(document).ready(function(){
@@ -58,8 +57,8 @@
                                  ?>
                         </select>
                         <br>
-                        Start Date: <input name="start_datetime" type="text" /><br>
-                        End Date: <input name="end_datetime" type="text" /><br>
+                        Start Date: <input id="start_datetime" name="start_datetime" type="text" /><br>
+                        End Date: <input id="end_datetime" name="end_datetime" type="text" /><br>
                         <button type="button" class="btn btn-defualt" id="submitevent">Add Participant!</button>
                     </form>
                 </p>
