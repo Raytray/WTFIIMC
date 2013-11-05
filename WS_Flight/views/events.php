@@ -9,7 +9,12 @@
         <script src="../static/js/timepicker.js"></script>
 
         <script>
+        <?php echo "var eventid=" . $event_id . ";";  ?>
             $(document).ready(function(){
+                $.getJSON("https://wtfiimc.appspot.com/api/schedule", {id: eventid})
+                    .done(function(json){
+                        $("#current_arrangement").html(json);
+                    });
                 $("#submitevent").click(function(){
                     $.ajax({
                         method: 'POST',
@@ -64,33 +69,6 @@
                 </p>
             </div>
             <div class="right_box">
-                <p>
-                    <b>Current participants:</b><br>
-                    <div id="current_participants">
-                        <?php
-                                  include_once('dblogin.php');
-                          $db_connection = new mysqli($SERVER, $USER, $PASSWORD, $DB);
-                          if (mysqli_connect_error()) {
-                              echo "Can't connect!";
-                              echo "<br>" . mysqli_connect_error();
-                              return null;
-                          }
-                          $sql = "SELECT name FROM participants WHERE event = " . $event_id;
-                          $results = mysqli_query($db_connection, $sql);
-                          echo '<ol>';
-                          while($row = mysqli_fetch_array($results)) {
-                              echo '<li>' . $row['name'] . '</li>';
-                          }
-                          echo '</ol>';
-                          mysqli_close($db_connection);
-                        ?>
-                </select>
-                <br>
-                Start Date: <input name="start_datetime" type="text" /><br>
-                End Date: <input name="end_datetime" type="text" /><br>
-                <button type="button" class="btn btn-defualt" id="submitevent">Add Participant!</button>
-                </form>
-            </p>
             <p>
                 <b>Current participants:</b><br>
                 <div id="current_participants">
