@@ -23,61 +23,67 @@
                 });
             });
         </script>
+
+        <link href="../static/css/wtfiimc.css" rel="stylesheet">
     </head>
 
     <body>
 
         <div class="container">
             <h1>Who The Fox Is In My Car</h1>
-            <p>
-                <b>Add a new participant to event!</b><br>
-                <form id="participants_insert">
-                Participants name: <input name="name" type="text" /><br>
-                Can drive?: <input type="checkbox" name="can_drive" /><br>
-                Seats open?: <input type="text" name="seats" /><br>
-                Event: <select name="event_id">
+            <div class="left_box">
+                <p>
+                    <b>Add a new participant to event!</b><br>
+                    <form id="participants_insert">
+                        Participants name: <input name="name" type="text" /><br>
+                        Can drive?: <input type="checkbox" name="can_drive" /><br>
+                        Seats open?: <input type="text" name="seats" /><br>
+                        Event: <select name="event_id">
+                            <?php
+                              include_once('dblogin.php');
+                              $db_connection = new mysqli($SERVER, $USER, $PASSWORD, $DB);
+                              if (mysqli_connect_error()) {
+                                  echo "Can't connect!";
+                                  echo "<br>" . mysqli_connect_error();
+                                  return null;
+                              }
+                              $sql = "SELECT id, name FROM events WHERE id = " . $event_id;
+                              $results = mysqli_query($db_connection, $sql);
+                              while($row = mysqli_fetch_array($results)) {
+                                  echo '<option value="' . $row['id'] . '">' . $row['name'] . '</option>';
+                              }
+                              mysqli_close($db_connection);
+                                 ?>
+                        </select>
+                        <br>
+                        Start Date: <input name="start_datetime" type="text" /><br>
+                        End Date: <input name="end_datetime" type="text" /><br>
+                        <button type="button" class="btn btn-defualt" id="submitevent">Add Participant!</button>
+                    </form>
+                </p>
+            </div>
+            <div class="right_box">
+                <p>
+                    <b>Current participants:</b><br>
+                    <div id="current_participants">
                         <?php
-                          include_once('dblogin.php');
+                                  include_once('dblogin.php');
                           $db_connection = new mysqli($SERVER, $USER, $PASSWORD, $DB);
                           if (mysqli_connect_error()) {
                               echo "Can't connect!";
                               echo "<br>" . mysqli_connect_error();
                               return null;
                           }
-                          $sql = "SELECT id, name FROM events WHERE id = " . $event_id;
+                          $sql = "SELECT name FROM participants WHERE event = " . $event_id;
                           $results = mysqli_query($db_connection, $sql);
+                          echo '<ol>';
                           while($row = mysqli_fetch_array($results)) {
-                              echo '<option value="' . $row['id'] . '">' . $row['name'] . '</option>';
+                              echo '<li>' . $row['name'] . '</li>';
                           }
+                          echo '</ol>';
                           mysqli_close($db_connection);
-                        ?>
-                </select>
-                <br>
-                Start Date: <input name="start_datetime" type="text" /><br>
-                End Date: <input name="end_datetime" type="text" /><br>
-                <button type="button" class="btn btn-defualt" id="submitevent">Add Participant!</button>
-                </form>
-            </p>
-            <p>
-                <b>Current participants:</b><br>
-                <div id="current_participants">
-                <?php
-                  include_once('dblogin.php');
-                  $db_connection = new mysqli($SERVER, $USER, $PASSWORD, $DB);
-                  if (mysqli_connect_error()) {
-                      echo "Can't connect!";
-                      echo "<br>" . mysqli_connect_error();
-                      return null;
-                  }
-                  $sql = "SELECT name FROM participants WHERE event = " . $event_id;
-                  $results = mysqli_query($db_connection, $sql);
-                  echo '<ol>';
-                  while($row = mysqli_fetch_array($results)) {
-                      echo '<li>' . $row['name'] . '</li>';
-                  }
-                  echo '</ol>';
-                  mysqli_close($db_connection);
-                ?></div>
+                        ?></div>
+            </div>
         </div>
     </body>
 </html>

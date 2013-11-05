@@ -8,7 +8,6 @@
         <link href="static/css/wtfiimc.css" rel="stylesheet">
         <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
         <script src="static/js/timepicker.js"></script>
-        <link href="static/css/wtfiimc.css" rel="stylesheet">
 
         <script>
             $(document).ready(function(){

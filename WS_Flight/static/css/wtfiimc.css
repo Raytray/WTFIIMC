@@ -8,6 +8,7 @@
   border-width: 1px;
   border-style: solid;
   display: inline-block;
+  margin: auto;
   margin-right: 25px;
 }
 .right_box {
@@ -16,5 +17,7 @@
   border-width: 1px;
   border-style: solid;
   display: inline-block;
+  margin: auto;
   margin-left: 25px;
+  position: absolute;
 }
