@@ -1,6 +1,15 @@
 import webapp2
 import json
 import urllib2
+import datetime
+
+from google.appengine.ext import ndb
+
+
+class Schedule(ndb.Model):
+    json_string = ndb.TextProperty(indexed=False)
+    date = ndb.DateTimeProperty(auto_now_add=True)
+    event_id = ndb.IntegerProperty()
 
 
 base_url = "http://plato.cs.virginia.edu/~cs4720f13cucumber/api"
@@ -30,13 +39,37 @@ class event_API(webapp2.RequestHandler):
 
 
 def get_schedule(event_id):
+    event_id = int(event_id)
     event_resource = get_events(event_id)
+    if len(event_resource['results']) <= 0:
+        return json.dumps({"Error": "Event does not exist."})
+
+    event_resource = event_resource['results'][0]['participants']
+
+    if len(event_resource) <= 0:
+        return json.dumps({"Error": "No participants."})
+
+    latest = sorted(event_resource,
+                    key=lambda participant: participant['created_datetime'],
+                    reverse=True)[0]['created_datetime']
+
+    latest = datetime.datetime.strptime(latest, "%Y-%m-%d %H:%M:%S")
+    latest = latest + datetime.timedelta(hours=5)
+
+    temp_schedule = Schedule.query(Schedule.event_id == event_id).fetch(1)
+    if len(temp_schedule) > 0:
+        temp_schedule = temp_schedule[0]
+        if temp_schedule.date > latest:
+            return temp_schedule.json_string
+    else:
+        temp_schedule = None
+
 
     drivers = [participant for participant in
-               event_resource['results'][0]['participants']
+               event_resource
                if int(participant['can_drive'])]
     riders = [participant for participant in
-             event_resource['results'][0]['participants']
+             event_resource
               if not int(participant['can_drive'])]
 
     # Error checks
@@ -70,7 +103,16 @@ def get_schedule(event_id):
 
     # Do a final check to see all driver have riders, else, stick them into someone elses car if there is space, or a car full of drivers?
 
-    return json.dumps({"Error": None, "Groups": drivers_sorted})
+    results = json.dumps({"Error": None, "Groups": drivers_sorted})
+
+    if temp_schedule is not None:
+        temp_schedule.json_string=results
+    else:
+        temp_schedule = Schedule(json_string=results,
+                                event_id=event_id)
+    temp_schedule.put()
+
+    return results
 
 
 def get_events(event_id=None):
