@@ -11,6 +11,17 @@
         <script>
         <?php echo "var eventid=" . $event_id . ";";  ?>
             $(document).ready(function(){
+                $("#can_drive").click(function(){
+                    if($('#can_drive').is(':checked')){
+                        $("#seats").val('');
+                        $("#seats").prop("disabled", false);
+                    }
+                    else{
+                        $("#seats").val('0');
+                        $("#seats").prop('disabled', true);
+                    } 
+
+                });
                 $.getJSON("https://wtfiimc.appspot.com/api/schedule", {id: eventid})
                     .done(function(json){
                         $("#current_arrangement").html(json);
@@ -42,8 +53,8 @@
                     <b>Add a new participant to event!</b><br>
                     <form id="participants_insert">
                         Participants name: <input name="name" type="text" /><br>
-                        Can drive?: <input type="checkbox" name="can_drive" /><br>
-                        Seats open?: <input type="text" name="seats" /><br>
+                        Can drive?: <input type="checkbox" id='can_drive' name="can_drive" /><br>
+                        Seats open?: <input type="number" id='seats' name="seats" /><br>
                         Event: <select name="event_id">
                             <?php
                               include_once('dblogin.php');
