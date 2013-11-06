@@ -19,11 +19,12 @@ class event_API(webapp2.RequestHandler):
         schedule = get_schedule(event_id)
 
         self.response.headers['Content-Type'] = 'application/json'
-        if 'callback' in request.get
+        callback = self.request.get('callback')
+        if callback is not None:
             callback = self.request.get('callback')
-            jsonp_schedule= callback + "(" + schedule + ")"
+            jsonp_schedule = callback + "(" + schedule + ")"
             self.response.write(jsonp_schedule)
-        else 
+        else:
             self.response.write(schedule)
 
 
