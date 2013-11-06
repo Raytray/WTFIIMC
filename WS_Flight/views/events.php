@@ -24,18 +24,23 @@
                 });
                 $.getJSON("https://wtfiimc.appspot.com/api/schedule/?callback=?", {id: eventid})
                     .done(function(json){
+                        console.log(json);
                         var arrangement="<ul>";
                         if(json.Error != null)
                             $("#current_arrangement").html(json.Error);
                         else{
                             for( var i=0; i<json.Groups.length; i++){
-                                arrangement +='<li>' + json.Groups[i].name + '<ul>';
-                                for(var j=0; j<json.Groups[i].riders.length; i++){
-                                    arrangement +='<li>' + json.Groups[i].riders[j].name + '</li>';
+                                console.log(i);
+                                var myarray = json.Groups;
+                                arrangement +='<li>' + myarray[i].name + '<ul>';
+                                for(var j=0; j<myarray[i].riders.length; j++){
+                                    var riderarray = myarray[i].riders;
+                                    arrangement +='<li>' + riderarray[j].name + '</li>';
                                 }
                                 arrangement+='</ul></li>';
                             }
-                            $("#current_arrangement").html(json);
+                            arrangement+='</ul>';
+                            $("#current_arrangement").html(arrangement);
                         }
                     });
                 $("#submitevent").click(function(){
