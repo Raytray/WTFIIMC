@@ -22,7 +22,7 @@
                     } 
 
                 });
-                $.getJSON("https://wtfiimc.appspot.com/api/schedule?callback=?", {id: eventid})
+                $.getJSON("https://wtfiimc.appspot.com/api/schedule/?callback=?", {id: eventid})
                     .done(function(json){
                         $("#current_arrangement").html(json);
                     });
