@@ -48,6 +48,17 @@ def get_schedule(event_id):
     if len(event_resource) <= 0:
         return json.dumps({"Error": "No participants."})
 
+    drivers = [participant for participant in
+               event_resource
+               if int(participant['can_drive'])]
+    riders = [participant for participant in
+             event_resource
+              if not int(participant['can_drive'])]
+
+    # Error checks
+    if (len(riders) > sum([int(driver['seats']) for driver in drivers])):
+        return json.dumps({"Error": "More riders than seats available."})
+
     latest = sorted(event_resource,
                     key=lambda participant: participant['created_datetime'],
                     reverse=True)[0]['created_datetime']
@@ -63,20 +74,6 @@ def get_schedule(event_id):
     else:
         temp_schedule = None
 
-
-    drivers = [participant for participant in
-               event_resource
-               if int(participant['can_drive'])]
-    riders = [participant for participant in
-             event_resource
-              if not int(participant['can_drive'])]
-
-    # Error checks
-    if (len(riders) > sum([int(driver['seats']) for driver in drivers])):
-        return json.dumps({"Error": "More riders than seats available."})
-
-    # Do other checks as necessary (more drivers than needed, no riders,
-    # no drivers, etc. Special cases? How do we deal with this dynamically?
 
     drivers_sorted = sorted(drivers,
                             key=lambda driver: driver['seats'],
@@ -100,7 +97,6 @@ def get_schedule(event_id):
                len(riders_sorted) > 0):
             driver['riders'].append(riders_sorted.pop())
 
-    # Do a final check to see all driver have riders, else, stick them into someone elses car if there is space, or a car full of drivers?
 
     results = json.dumps({"Error": None, "Groups": drivers_sorted})
 
