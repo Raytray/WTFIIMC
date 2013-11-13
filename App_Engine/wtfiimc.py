@@ -71,9 +71,6 @@ def get_schedule(event_id):
         temp_schedule = temp_schedule[0]
         if temp_schedule.date > latest:
             return temp_schedule.json_string
-    else:
-        temp_schedule = None
-
 
     drivers_sorted = sorted(drivers,
                             key=lambda driver: driver['seats'],
@@ -100,13 +97,9 @@ def get_schedule(event_id):
 
     results = json.dumps({"Error": None, "Groups": drivers_sorted})
 
-    if temp_schedule is not None:
-        temp_schedule.json_string=results
-    else:
-        temp_schedule = Schedule(json_string=results,
-                                event_id=event_id)
+    temp_schedule = Schedule(json_string=results,
+                             event_id=event_id)
     temp_schedule.put()
-
     return results
 
 
