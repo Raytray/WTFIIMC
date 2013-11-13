@@ -1,10 +1,9 @@
 import webapp2
 import json
-import urllib2
 import datetime
 
 from google.appengine.ext import ndb
-
+from google.appengine.api import urlfetch
 
 class Schedule(ndb.Model):
     json_string = ndb.TextProperty(indexed=False)
@@ -41,12 +40,12 @@ def get_schedule(event_id):
     event_id = int(event_id)
     event_resource = get_events(event_id)
     if len(event_resource['results']) <= 0:
-        return json.dumps({"Error": "Event does not exist."})
+        return json.dumps({"Error": "Event does not exist.", "Date": datetime.datetime.now().isoformat()})
 
     event_resource = event_resource['results'][0]['participants']
 
     if len(event_resource) <= 0:
-        return json.dumps({"Error": "No participants."})
+        return json.dumps({"Error": "No participants.", "Date": datetime.datetime.now().isoformat()})
 
     drivers = [participant for participant in
                event_resource
@@ -57,7 +56,7 @@ def get_schedule(event_id):
 
     # Error checks
     if (len(riders) > sum([int(driver['seats']) for driver in drivers])):
-        return json.dumps({"Error": "More riders than seats available."})
+        return json.dumps({"Error": "More riders than seats available.", "Date": datetime.datetime.now().isoformat()})
 
     latest = sorted(event_resource,
                     key=lambda participant: participant['created_datetime'],
@@ -95,7 +94,7 @@ def get_schedule(event_id):
             driver['riders'].append(riders_sorted.pop())
 
 
-    results = json.dumps({"Error": None, "Groups": drivers_sorted})
+    results = json.dumps({"Error": None, "Groups": drivers_sorted, "Date": datetime.datetime.now().isoformat()})
 
     temp_schedule = Schedule(json_string=results,
                              event_id=event_id)
@@ -105,11 +104,11 @@ def get_schedule(event_id):
 
 def get_events(event_id=None):
     if type(event_id) is int:
-        results = urllib2.urlopen("{}/event/{}".format(base_url, event_id))
+        results = urlfetch.fetch("{}/event/{}".format(base_url, event_id))
     else:
-        results = urllib2.urlopen("{}/event/".format(base_url))
+        results = urlfetch.fetch("{}/event/".format(base_url))
 
-    return json.loads(results.read())
+    return json.loads(results.content)
 
 
 application = webapp2.WSGIApplication([
