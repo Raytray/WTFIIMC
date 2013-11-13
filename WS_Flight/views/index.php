@@ -14,7 +14,7 @@
                 $("#submitevent").click(function(){
                     $.ajax({
                         method: 'POST',
-                        url: '../php/newevent.php',
+                        url: 'php/newevent.php',
                         data: $('#event_insert').serialize(),
                         success: function(data){
                             $("#event_insert")[0].reset();
