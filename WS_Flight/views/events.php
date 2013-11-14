@@ -11,6 +11,8 @@
         <script>
         <?php echo "var eventid=" . $event_id . ";";  ?>
             $(document).ready(function(){
+                $("#seats").val('0');
+                $("#seats").prop('disabled', true);
                 $("#can_drive").click(function(){
                     if($('#can_drive').is(':checked')){
                         $("#seats").val('');
@@ -90,8 +92,8 @@
                                  ?>
                         </select>
                         <br>
-                        Start Date: <input id="start_datetime" name="start_datetime" type="text" /><br>
-                        End Date: <input id="end_datetime" name="end_datetime" type="text" /><br>
+                        Start Date: <input id="start_datetime" name="start_datetime" type="datetime-local" /><br>
+                        End Date: <input id="end_datetime" name="end_datetime" type="datetime-local" /><br>
                         <button type="button" class="btn btn-defualt" id="submitevent">Add Participant!</button>
                     </form>
                 </p>
@@ -125,9 +127,5 @@
                 </div>
             </p>
         </div>
-                  <script>
-                  $('#start_datetime').datetimepicker();
-                  $('#end_datetime').datetimepicker();
-                  </script>
     </body>
 </html>
