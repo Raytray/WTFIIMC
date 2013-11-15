@@ -3,6 +3,7 @@ package com.example.wtfiimc;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.Intent;
 import android.view.Menu;
 import android.util.Log;
 import android.view.View;
@@ -26,6 +27,7 @@ import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
@@ -42,7 +44,6 @@ public class MainActivity extends Activity {
     private EditText endDate;
     private TextView returnResults;
     private TextView currentEvents;
-    String getResult = "untouched!!";
     
     ListView courseList;
     String webserviceURL = "http://plato.cs.virginia.edu/~cs4720f13cucumber/api/";
@@ -127,6 +128,10 @@ public class MainActivity extends Activity {
 			returnResults.setText(result);
 		}
 	}
+	public void listEvents(View view) {
+		Intent intent = new Intent(this, ListEventsActivity.class);
+	    startActivity(intent);
+	}
 	
 	private class GetCurrentEvents extends AsyncTask<String, Integer, String> {
 		@Override
@@ -137,20 +142,18 @@ public class MainActivity extends Activity {
 			String url = param[0];
 			InputStream is = null;
 			String result = "";
-			getResult = "touched once";
 			// http post
 			try {
 				HttpClient httpclient = new DefaultHttpClient();
-				HttpPost httppost = new HttpPost(url);
+				HttpGet httppost = new HttpGet(url);
 				HttpResponse response = httpclient.execute(httppost);
 				HttpEntity entity = response.getEntity();
 				is = entity.getContent();
-				getResult = "touched twice";
 				Log.d("response code", response.getStatusLine().toString());
 				
 
 			} catch (Exception e) {
-				Log.e("LousList", "Error in http connection " + e.toString());
+				Log.e("WTFIIMC", "Error in http connection " + e.toString());
 			}
 
 			// convert response to string
@@ -172,9 +175,14 @@ public class MainActivity extends Activity {
 			try{
 				JSONObject jObject = new JSONObject(result);
 				JSONArray resultsArray = jObject.getJSONArray("results");
-				for(int i=resultsArray.length()-1; i>= 0; i--){
+				int limitFive = resultsArray.length()-5;
+				if(limitFive < 0)
+					limitFive=0;
+				for(int i=resultsArray.length()-1; i>= limitFive; i--){
 					JSONObject eventObject = resultsArray.getJSONObject(i);
+					
 					jsonToString.append(eventObject.getString("id")+" "+eventObject.getString("name")+"\n");
+					
 				}
 			}
 			catch(Exception e){

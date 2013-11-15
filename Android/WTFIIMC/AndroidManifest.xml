@@ -7,7 +7,8 @@
     <uses-sdk
         android:minSdkVersion="8"
         android:targetSdkVersion="18" />
-    <uses-permission android:name="android.permission.INTERNET"/>
+
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -16,15 +17,30 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name="com.example.wtfiimc.MainActivity"
-            android:label="@string/app_name" 
-            android:screenOrientation="landscape"
-			android:configChanges="keyboardHidden|orientation|screenSize">
-            
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:label="@string/app_name"
+            android:screenOrientation="landscape" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name="com.example.wtfiimc.ListEventsActivity"
+            android:label="@string/title_activity_list_events"
+            android:parentActivityName="com.example.WTFIIMC.MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.wtfiimc.MainActivity" />
+        </activity>
+        <activity
+            android:name="com.example.wtfiimc.EventActivity"
+            android:label="@string/title_activity_event"
+            android:parentActivityName="com.example.wtfiimc.ListEventsActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.wtfiimc.ListEventsActivity" />
         </activity>
     </application>
 
