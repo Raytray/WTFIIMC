@@ -104,9 +104,9 @@ def get_schedule(event_id):
 
 def get_events(event_id=None):
     if type(event_id) is int:
-        results = urlfetch.fetch("{}/event/{}".format(base_url, event_id))
+        results = urlfetch.fetch("{}/event/{}".format(base_url, event_id), headers={'Cache-Control': 'max-age=1'})
     else:
-        results = urlfetch.fetch("{}/event/".format(base_url))
+        results = urlfetch.fetch("{}/event/".format(base_url), headers={'Cache-Control': 'max-age=1'})
 
     return json.loads(results.content)
 
