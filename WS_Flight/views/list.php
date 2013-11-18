@@ -11,7 +11,7 @@
     <body>
 
         <div class="container">
-            <h1>Who The Fox Is In My Car</h1>
+            <?php echo $navbar; ?>
             <p>
                         <?php
                           include_once('dblogin.php');

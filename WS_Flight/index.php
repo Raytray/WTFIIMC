@@ -2,18 +2,22 @@
 require 'flight/Flight.php';
 
 Flight::route('/', function(){
+        Flight::render('navbar', array('temp' => 'temp'), 'navbar');
         Flight::render('index', array('title' => 'Index'));
 });
 
 Flight::route('/participants', function(){
+        Flight::render('navbar', array('temp' => 'temp'), 'navbar');
         Flight::render('participants', array('title' => 'Participants'));
 });
 
 Flight::route('/events', function(){
+        Flight::render('navbar', array('temp' => 'temp'), 'navbar');
         Flight::render('list', array('title' => 'Events list'));
 });
 
 Flight::route('/events/@id', function($id){
+        Flight::render('navbar', array('temp' => 'temp'), 'navbar');
         Flight::render('events', array('title' => 'Events', 'event_id' => $id));
 });
 

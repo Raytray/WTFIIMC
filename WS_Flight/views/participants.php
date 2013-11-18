@@ -26,7 +26,7 @@
     <body>
 
         <div class="container">
-            <h1>Who The Fox Is In My Car</h1>
+            <?php echo $navbar; ?>
             <p>
                 <b>Create a new participant:</b><br>
                 <form id="participants_insert">
