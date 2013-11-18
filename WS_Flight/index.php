@@ -4,27 +4,27 @@ require 'flight/Flight.php';
 Flight::route('/', function(){
         Flight::render('navbar', array('temp' => 'temp'), 'navbar');
         Flight::render('index', array('title' => 'Index'));
-});
+    });
 
 Flight::route('/participants', function(){
         Flight::render('navbar', array('temp' => 'temp'), 'navbar');
         Flight::render('participants', array('title' => 'Participants'));
-});
+    });
 
 Flight::route('/events', function(){
         Flight::render('navbar', array('temp' => 'temp'), 'navbar');
         Flight::render('list', array('title' => 'Events list'));
-});
+    });
 
 Flight::route('/events/@id', function($id){
         Flight::render('navbar', array('temp' => 'temp'), 'navbar');
         Flight::render('events', array('title' => 'Events', 'event_id' => $id));
-});
+    });
 
-Flight::route('/Android', function($id){
+Flight::route('/android', function(){
         Flight::render('navbar', array('temp' => 'temp'), 'navbar');
-        Flight::render('events', array('title' => 'Events', 'event_id' => $id));
-});
+        Flight::render('android', array('title' => 'Android App'));
+    });
 
 Flight::route('GET /api/event(/(@id))', function($id = NULL){
         include_once('php/dblogin.php');
@@ -76,7 +76,7 @@ Flight::route('GET /api/event(/(@id))', function($id = NULL){
         $return = array('results' => $json);
 
         echo json_encode($return);
-});
+    });
 
 Flight::route('POST /api/new/event', function(){
         include_once('php/dblogin.php');
@@ -107,7 +107,7 @@ Flight::route('POST /api/new/event', function(){
         $stmt->close();
 
         mysqli_close($db_connection);
-});
+    });
 
 Flight::route('POST /api/new/participant', function(){
         include_once('php/dblogin.php');
@@ -132,7 +132,7 @@ Flight::route('POST /api/new/participant', function(){
 
         $result = mysqli_query($db_connection, $sql);
         mysqli_close($db_connection);
-});
+    });
 
 Flight::start();
 ?>
