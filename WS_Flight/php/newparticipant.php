@@ -13,8 +13,8 @@ $name = $_POST['name'];
 $can_drive = $_POST['can_drive'];
 $seats = $_POST['seats'];
 $event_id = $_POST['event_id'];
-$start = $_POST['start_datetime'];
-$end = $_POST['end_datetime'];
+$start = date('Y-m-d H;i:s', strtotime($_POST['start_datetime']));
+$end = date('Y-m-d H:i:s', strtotime($_POST['end_datetime']));
 
 $sql="insert into participants (name, can_drive, seats, event, start_datetime, end_datetime) values ('$name', '$can_drive', '$seats', '$event_id', '$start', '$end')";
 

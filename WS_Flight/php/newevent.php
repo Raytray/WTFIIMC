@@ -11,8 +11,8 @@ if (mysqli_connect_error()) {
 //echo "connect successful";
 $name = $_POST['name'];
 $eventinfo = $_POST['event_info'];
-$start = $_POST['start_datetime'];
-$end = $_POST['end_datetime'];
+$start = date('Y-m-d H:i', strtotime($_POST['start_datetime']));
+$end = date('Y-m-d H:i',strtotime($_POST['end_datetime']));
 
 if(isset($name)){
     $ins_stmt = $db_connection->stmt_init();

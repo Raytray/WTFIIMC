@@ -36,7 +36,7 @@ Flight::route('GET /api/event(/(@id))', function($id = NULL){
         }
         $sql = "";
         if ($id == NULL) {
-            $sql = "SELECT * FROM events";
+            $sql = "SELECT * FROM events where start_datetime>=NOW() order by start_datetime ASC";
         }
         else {
             $sql = "SELECT * FROM events WHERE id = " . $id;
@@ -90,8 +90,8 @@ Flight::route('POST /api/new/event', function(){
         $data = $request->data;
         $name = $data->name;
         $eventinfo = $data->event_info;
-        $start = $data->start_datetime;
-        $end = $data->end_datetime;
+        $start = date('Y-m-d H:i', strtotime($data->start_datetime));
+        $end = date('Y-m-d H:i', strtotime($data->end_datetime));
 
         if(isset($name)){
                 $ins_stmt = $db_connection->stmt_init();
@@ -125,8 +125,8 @@ Flight::route('POST /api/new/participant', function(){
         $can_drive = $data->can_drive;
         $seats = $data->seats;
         $event_id = $data->event_id;
-        $start = $data->start_datetime;
-        $end = $data->end_datetime;
+        $start = date('Y-m-d H:i', strtotime($data->start_datetime));
+        $end = date('Y-m-d H:i', strtotime($data->end_datetime));
 
         $sql="insert into participants (name, can_drive, seats, event, start_datetime, end_datetime) values ('$name', '$can_drive', '$seats', '$event_id', '$start', '$end')";
 

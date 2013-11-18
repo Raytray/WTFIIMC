@@ -58,5 +58,9 @@
                 </form>
             </p>
         </div>
+                          <script>
+                          $('#start_datetime').datetimepicker();
+                          $('#end_datetime').datetimepicker();
+                          </script>
     </body>
 </html>

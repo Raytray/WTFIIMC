@@ -92,8 +92,8 @@
                                  ?>
                         </select>
                         <br>
-                        Start Date: <input id="start_datetime" name="start_datetime" type="datetime-local" /><br>
-                        End Date: <input id="end_datetime" name="end_datetime" type="datetime-local" /><br>
+                        Start Date: <input id="start_datetime" name="start_datetime" type="datetime" /><br>
+                        End Date: <input id="end_datetime" name="end_datetime" type="datetime" /><br>
                         <button type="button" class="btn btn-defualt" id="submitevent">Add Participant!</button>
                     </form>
                 </p>
@@ -127,5 +127,9 @@
                 </div>
             </p>
         </div>
+                          <script>
+                          $('#start_datetime').datetimepicker();
+                          $('#end_datetime').datetimepicker();
+                          </script>
     </body>
 </html>
