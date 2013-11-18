@@ -43,6 +43,7 @@
                     </form>
                 </p>
             </div>
+
             <div class="right_box">
                 <p><b>Current events:</b>
                     <div id="current_events">
@@ -67,9 +68,9 @@
                 </p>
             </div>
         </div>
-                          <script>
-                          $('#start_datetime').datetimepicker();
-                          $('#end_datetime').datetimepicker();
-                          </script>
+        <script>
+            $('#start_datetime').datetimepicker();
+            $('#end_datetime').datetimepicker();
+        </script>
     </body>
 </html>

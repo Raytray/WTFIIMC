@@ -1,20 +1,37 @@
-.box_size () {
-    width: 400px;
-    height: 400px;
+.box_size {
+    max-width: 400px;
+    min-width: 300px;
+    height: 100%;
     display: inline-block;
     margin: auto;
+    margin-right: 5%;
+    margin-left: 5%;
 }
 
 .container {
-    width: 900px;
+    max-width: 900px;
     margin: auto;
 }
 .left_box {
     .box_size;
-    margin-right: 25px;
 }
 .right_box {
     .box_size;
-    margin-left: 25px;
     position: absolute;
+}
+input {
+    margin: 5px auto;
+}
+
+@media all and (max-width: 901px) {
+    .left_box {
+        .box_size;
+        display: block;
+        width: 100%;
+    }
+    .right_box {
+        .box_size;
+        display: block;
+        width: 100%;
+    }
 }
