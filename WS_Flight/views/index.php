@@ -37,8 +37,8 @@
                         Event name: <input name="name" type="text" /><br>
                         Event description: <br>
                         <textarea style='margin: 0px; width: 262px; height: 130px;' name="event_info" type="text"></textarea><br>
-                        Start Date: <input id='start_datetime' name="start_datetime" type="text" /><br>
-                        End Date: <input id ='end_datetime' name="end_datetime" type="text" /><br>
+                        Event start date: <input id='start_datetime' name="start_datetime" type="text" /><br>
+                        Event end date: <input id ='end_datetime' name="end_datetime" type="text" /><br>
                         <button type="button" class="btn btn-defualt" id="submitevent">Create Event!</button>
                     </form>
                 </p>

@@ -52,8 +52,8 @@
                         ?>
                 </select>
                 <br>
-                Start Date: <input name="start_datetime" type="text" /><br>
-                End Date: <input name="end_datetime" type="text" /><br>
+                        Prefered pickup start: <input id="start_datetime" name="start_datetime" type="datetime" /><br>
+                        Prefered pickup end: <input id="end_datetime" name="end_datetime" type="datetime" /><br>
                 <button type="button" class="btn btn-defualt" id="submitevent">Add Participant!</button>
                 </form>
             </p>
