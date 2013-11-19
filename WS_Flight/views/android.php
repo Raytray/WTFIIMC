@@ -13,7 +13,11 @@
     <body>
         <div class="container">
             <?php echo $navbar; ?>
+            Ever wish you had WTFIIMC on the go? Now you can!
             <a href="http://plato.cs.virginia.edu/~cs4720f13cucumber/WTFIIMCPhase4.apk">Download our new Android app!</a>
+            <img src="http://i.imgur.com/vmwDYPel.jpg" /> A listing of all events.<br />
+            <img src="http://i.imgur.com/dgDbvBil.jpg" /> Add events view.<br />
+            <img src="http://i.imgur.com/F4RgFY7l.jpg" /> Single event view.<br />
         </div>
     </body>
 </html>
