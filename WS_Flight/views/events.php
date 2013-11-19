@@ -83,10 +83,15 @@
                                   echo "<br>" . mysqli_connect_error();
                                   return null;
                               }
-                              $sql = "SELECT id, name FROM events WHERE id = " . $event_id;
+                              $sql = "SELECT id, name, start_datetime, end_datetime FROM events WHERE id = " . $event_id;
                               $results = mysqli_query($db_connection, $sql);
+                              echo '<script>';
                               while($row = mysqli_fetch_array($results)) {
+                                  echo 'var starttime = "' . $row['start_datetime'] . '";';
+                                  echo 'var endtime = "' . $row['end_datetime'] . '";';
+                                  echo '</script>';
                                   echo '<option value="' . $row['id'] . '">' . $row['name'] . '</option>';
+                                  
                               }
                               mysqli_close($db_connection);
                                  ?>
@@ -128,8 +133,15 @@
             </p>
         </div>
                           <script>
-                          $('#start_datetime').datetimepicker();
-                          $('#end_datetime').datetimepicker();
+                  var min = 
+                  $('#start_datetime').datetimepicker({
+                      minDate: new Date(starttime),
+                      maxDate: new Date(endtime)
+                  });
+                          $('#end_datetime').datetimepicker({
+                      minDate: new Date(starttime),
+                      maxDate: new Date(endtime)
+                  });
                           </script>
     </body>
 </html>
