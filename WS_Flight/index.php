@@ -26,6 +26,11 @@ Flight::route('/android', function(){
         Flight::render('android', array('title' => 'Android App'));
     });
 
+Flight::route('/api', function(){
+        Flight::render('navbar', array('temp' => 'temp'), 'navbar');
+        Flight::render('api', array('title' => 'API'));
+    });
+
 Flight::route('GET /api/event(/(@id))', function($id = NULL){
         include_once('php/dblogin.php');
         $db_connection = new mysqli($SERVER, $USER, $PASSWORD, $DB);

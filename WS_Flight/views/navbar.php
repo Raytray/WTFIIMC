@@ -8,9 +8,10 @@
   </div>
 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
     <ul class="nav navbar-nav">
-      <li class="active"><a href="/~cs4720f13cucumber/">Events</a></li>
-      <li><a href="/~cs4720f13cucumber/android">Learn more about our Android App!</a></li>
-      <li><a href="http://plato.cs.virginia.edu/~cs4720f13cucumber/WTFIIMCPhase4.apk">Download now!</a></li>
+      <li><a href="/~cs4720f13cucumber/">List of Events</a></li>
+      <li><a href="/~cs4720f13cucumber/android">About our Android App!</a></li>
+      <li><a href="http://plato.cs.virginia.edu/~cs4720f13cucumber/WTFIIMCPhase4.apk">Download App!</a></li>
+      <li><a href="http://plato.cs.virginia.edu/~cs4720f13cucumber/api">Learn about our APIs</a></li>
     </ul>
   </div><!-- /.navbar-collapse -->
 </nav>
