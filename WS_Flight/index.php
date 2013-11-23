@@ -125,7 +125,7 @@ Flight::route('POST /api/new/participant', function(){
         $email = $data->email;
         $phone = $data->phone;
         $location = $data->location;
-        $can_drive = $data->can_drive;
+        $can_drive = (boolean)$data->can_drive;
         $seats = $data->seats;
         $event_id = $data->event_id;
         $start = date('Y-m-d H:i', strtotime($data->start_datetime));
