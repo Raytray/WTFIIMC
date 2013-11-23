@@ -27,7 +27,7 @@ $stmt = $db_connection->stmt_init();
 
 $stmt->close();
 
-$sql = "SELECT * FROM events";
+$sql = "SELECT * FROM events where start_datetime>=NOW() order by start_datetime ASC";
 $results = mysqli_query($db_connection, $sql);
 echo '<ol>';
 while($row = mysqli_fetch_array($results)) {
