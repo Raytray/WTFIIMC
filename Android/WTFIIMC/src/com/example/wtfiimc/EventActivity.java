@@ -43,6 +43,9 @@ public class EventActivity extends Activity {
 	private TextView returnResults;
 	private EditText startDate;
     private EditText endDate;
+    private EditText personEmail;
+    private EditText personPhone;
+    private EditText personLocation;
     private TextView eventInfoResults;
     private TextView rideInfoResults;
     private Button submitButton;
@@ -64,6 +67,9 @@ public class EventActivity extends Activity {
 		
 		submitButton = (Button)findViewById(R.id.submit_person_button);
 		personName = (EditText)findViewById(R.id.person_name);
+		personEmail = (EditText)findViewById(R.id.person_email);
+		personPhone = (EditText)findViewById(R.id.person_phone);
+		personLocation = (EditText)findViewById(R.id.person_location);
 		seatsOpen = (EditText)findViewById(R.id.num_seats_open);
 		startDate = (EditText)findViewById(R.id.start_date);
 		endDate = (EditText)findViewById(R.id.end_date);
@@ -82,23 +88,28 @@ public class EventActivity extends Activity {
 		
 		submitButton.setOnClickListener(new OnClickListener() {
         	public void onClick(View v){
-        		if(isEmpty(personName) || isEmpty(startDate) || isEmpty(endDate)) {
+        		if(isEmpty(personName) || isEmpty(startDate) || isEmpty(endDate) || isEmpty(personEmail) || isEmpty(personPhone) || isEmpty(personLocation)) {
         			returnResults.setText("Missing required fields");
         		}
         		else {
         			String check;
-        			if(canDrive.isChecked())
+        			if(canDrive.isChecked()){
         				check = "1";
-        			else
+        			}
+        			else {
         				check = "0";
+        			}
         			String seats;
         			if(isEmpty(seatsOpen))
         				seats = "0";
         			else
         				seats = seatsOpen.getText().toString();
-        			new PostNewParticipant().execute(personName.getText().toString(), check, seats, eventId, startDate.getText().toString(), endDate.getText().toString());
+        			new PostNewParticipant().execute(personName.getText().toString(), check, seats, eventId, startDate.getText().toString(), endDate.getText().toString(), personEmail.getText().toString(), personPhone.getText().toString(), personLocation.getText().toString());
         		
             		personName.setText("");
+            		personEmail.setText("");
+            		personLocation.setText("");
+            		personPhone.setText("");
             		startDate.setText("");
             		endDate.setText("");
             		seatsOpen.setText("");
@@ -151,7 +162,7 @@ public class EventActivity extends Activity {
 			} catch (Exception e) {
 				Log.e("WTFIIMC", "Error converting result " + e.toString());
 			}
-			Log.i("Web", result);
+			//Log.i("Web", result);
 			StringBuilder jsonToString = new StringBuilder();
 			try{
 				JSONObject jObject = new JSONObject(result).getJSONArray("results").getJSONObject(0);
@@ -224,7 +235,7 @@ public class EventActivity extends Activity {
 			} catch (Exception e) {
 				Log.e("WTFIIMC", "Error converting result " + e.toString());
 			}
-			Log.i("Web", result);
+			//Log.i("Web", result);
 			
 			return result;
 		}
@@ -281,18 +292,22 @@ public class EventActivity extends Activity {
 			HttpPost httppost = new HttpPost(url);
 			// http post
 			try {
-				List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
+				List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
 		        nameValuePairs.add(new BasicNameValuePair("name", param[0]));
 		        nameValuePairs.add(new BasicNameValuePair("can_drive", param[1]));
 		        nameValuePairs.add(new BasicNameValuePair("seats", param[2]));
 		        nameValuePairs.add(new BasicNameValuePair("event_id", param[3]));
 		        nameValuePairs.add(new BasicNameValuePair("start_datetime", param[4]));
 		        nameValuePairs.add(new BasicNameValuePair("end_datetime", param[5]));
+		        nameValuePairs.add(new BasicNameValuePair("email", param[6]));
+		        nameValuePairs.add(new BasicNameValuePair("phone", param[7]));
+		        nameValuePairs.add(new BasicNameValuePair("location", param[8]));
 		        
 		        httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 				HttpResponse response = httpclient.execute(httppost);
 				//HttpEntity entity = response.getEntity();
 				//is = entity.getContent();
+				//Log.i("params", param[1] + " "+ param[6] + " "+ param[7]);
 				Log.d("response code", response.getStatusLine().toString());
 				
 
