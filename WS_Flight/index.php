@@ -122,13 +122,16 @@ Flight::route('POST /api/new/participant', function(){
         $request = Flight::request();
         $data = $request->data;
         $name = $data->name;
+        $email = $data->email;
+        $phone = $data->phone;
+        $location = $data->location;
         $can_drive = $data->can_drive;
         $seats = $data->seats;
         $event_id = $data->event_id;
         $start = date('Y-m-d H:i', strtotime($data->start_datetime));
         $end = date('Y-m-d H:i', strtotime($data->end_datetime));
 
-        $sql="insert into participants (name, can_drive, seats, event, start_datetime, end_datetime) values ('$name', '$can_drive', '$seats', '$event_id', '$start', '$end')";
+        $sql="insert into participants (name, email, phone, location, can_drive, seats, event, start_datetime, end_datetime) values ('$name', '$email', '$phone', '$location', '$can_drive', '$seats', '$event_id', '$start', '$end')";
 
         $result = mysqli_query($db_connection, $sql);
         mysqli_close($db_connection);
