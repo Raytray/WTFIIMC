@@ -1,6 +1,8 @@
 import webapp2
+import sendgrid
 import json
 import datetime
+import ConfigParser
 
 from google.appengine.ext import ndb
 from google.appengine.api import urlfetch
@@ -34,6 +36,16 @@ class event_API(webapp2.RequestHandler):
            self.response.write(jsonp_schedule)
         else:
             self.response.write(schedule)
+
+class email_API(webapp2.RequestHandler):
+
+    def get(self):
+        config = ConfigParser.RawConfigParser()
+        config.read('sendgrid.cfg')
+        email = config.get('sendgrid', 'email')
+        password = config.get('sendgrid', 'password')
+        s = Sendgrid.Sendgrid(email,password)
+        print email + password
 
 
 def get_schedule(event_id):
@@ -114,4 +126,5 @@ def get_events(event_id=None):
 application = webapp2.WSGIApplication([
         ('/', MainPage),
         ('/api/schedule/', event_API),
+        ('/api/email/', email_API),
         ], debug=True)
