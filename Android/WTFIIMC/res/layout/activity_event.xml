@@ -30,6 +30,19 @@
 			        android:layout_width="wrap_content"
 			        android:layout_height="wrap_content"
 			        android:hint="@string/prompt_owner_name" />
+				<EditText android:id="@+id/person_email"
+			        android:layout_width="wrap_content"
+			        android:layout_height="wrap_content"
+			        android:hint="@string/prompt_email" />
+				<EditText android:id="@+id/person_phone"
+			        android:layout_width="wrap_content"
+			        android:layout_height="wrap_content"
+			        android:hint="@string/prompt_phone" />
+				<EditText android:id="@+id/person_location"
+				    android:layout_width="wrap_content"
+			        android:layout_height="wrap_content"
+			        android:hint="@string/prompt_location" />
+
 				<CheckBox android:id="@+id/check_can_drive"
 		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"

@@ -12,6 +12,9 @@
     <string name="list_of_events">Recently added events:</string>
     <string name="prompt_event_name">Event name</string>
     <string name="prompt_owner_name">Your name</string>
+    <string name="prompt_location">Pick-up location</string>
+    <string name="prompt_phone">Phone number</string>
+    <string name="prompt_email">Email</string>
     <string name="prompt_start_date">Start date</string>
     <string name="date_to"> to </string>
     <string name="prompt_event_desc">Description of event</string>
