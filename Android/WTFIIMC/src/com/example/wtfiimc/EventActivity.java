@@ -162,7 +162,7 @@ public class EventActivity extends Activity {
 			} catch (Exception e) {
 				Log.e("WTFIIMC", "Error converting result " + e.toString());
 			}
-			Log.i("Web", result);
+			//Log.i("Web", result);
 			StringBuilder jsonToString = new StringBuilder();
 			try{
 				JSONObject jObject = new JSONObject(result).getJSONArray("results").getJSONObject(0);
@@ -235,7 +235,7 @@ public class EventActivity extends Activity {
 			} catch (Exception e) {
 				Log.e("WTFIIMC", "Error converting result " + e.toString());
 			}
-			Log.i("Web", result);
+			//Log.i("Web", result);
 			
 			return result;
 		}
@@ -307,7 +307,7 @@ public class EventActivity extends Activity {
 				HttpResponse response = httpclient.execute(httppost);
 				//HttpEntity entity = response.getEntity();
 				//is = entity.getContent();
-				Log.i("params", param.toString());
+				//Log.i("params", param[1] + " "+ param[6] + " "+ param[7]);
 				Log.d("response code", response.getStatusLine().toString());
 				
 
