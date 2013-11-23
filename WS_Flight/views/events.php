@@ -21,8 +21,7 @@
                     else{
                         $("#seats").val('0');
                         $("#seats").prop('disabled', true);
-                    } 
-
+                    }
                 });
                 $.getJSON("https://wtfiimc.appspot.com/api/schedule/?callback=?", {id: eventid})
                     .done(function(json){
@@ -72,9 +71,12 @@
                     <b>Add a new participant to event!</b><br>
                     <form id="participants_insert">
                         Participants name: <input name="name" type="text" /><br>
+                        Email?: <input type="email" id='email' name="email" /><br>
+                        Phone number?: <input type="text" id='phone' name="phone" /><br>
                         Can drive?: <input type="checkbox" id='can_drive' name="can_drive" /><br>
                         Seats open?: <input type="number" id='seats' name="seats" /><br>
-                        Event: <select name="event_id">
+                        <div style="display: none">
+                            Event: <select name="event_id">
                             <?php
                               include_once('dblogin.php');
                               $db_connection = new mysqli($SERVER, $USER, $PASSWORD, $DB);
@@ -91,11 +93,10 @@
                                   echo 'var endtime = "' . $row['end_datetime'] . '";';
                                   echo '</script>';
                                   echo '<option value="' . $row['id'] . '">' . $row['name'] . '</option>';
-                                  
                               }
                               mysqli_close($db_connection);
                                  ?>
-                        </select>
+                        </select></div>
                         <br>
                         Prefered pickup start: <input id="start_datetime" name="start_datetime" type="datetime" /><br>
                         Prefered pickup end: <input id="end_datetime" name="end_datetime" type="datetime" /><br>

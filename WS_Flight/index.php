@@ -6,11 +6,6 @@ Flight::route('/', function(){
         Flight::render('index', array('title' => 'Index'));
     });
 
-Flight::route('/participants', function(){
-        Flight::render('navbar', array('temp' => 'temp'), 'navbar');
-        Flight::render('participants', array('title' => 'Participants'));
-    });
-
 Flight::route('/events', function(){
         Flight::render('navbar', array('temp' => 'temp'), 'navbar');
         Flight::render('list', array('title' => 'Events list'));
