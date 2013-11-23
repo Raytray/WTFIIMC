@@ -10,13 +10,16 @@ if (mysqli_connect_error()) {
 }
 
 $name = $_POST['name'];
+$email = $_POST['email'];
+$phone = $_POST['phone'];
+$location = $_POST['location'];
 $can_drive = $_POST['can_drive'];
 $seats = $_POST['seats'];
 $event_id = $_POST['event_id'];
 $start = date('Y-m-d H;i:s', strtotime($_POST['start_datetime']));
 $end = date('Y-m-d H:i:s', strtotime($_POST['end_datetime']));
 
-$sql="insert into participants (name, can_drive, seats, event, start_datetime, end_datetime) values ('$name', '$can_drive', '$seats', '$event_id', '$start', '$end')";
+$sql="insert into participants (name, email, phone, location, can_drive, seats, event, start_datetime, end_datetime) values ('$name', '$email', '$phone', '$location', '$can_drive', '$seats', '$event_id', '$start', '$end')";
 
 $result = mysqli_query($db_connection, $sql);
 $sql = "SELECT name FROM participants WHERE event = " . $event_id;

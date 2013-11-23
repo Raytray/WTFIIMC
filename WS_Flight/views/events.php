@@ -71,6 +71,7 @@
                         Participants name: <input name="name" type="text" required /><br>
                         Email?: <input type="email" id='email' name="email" required /><br>
                         Phone number?: <input type="text" id='phone' name="phone" required /><br>
+                        Pick up location?: <input type="text" id='location' name="location" required /><br>
                         Can drive?: <input type="checkbox" id='can_drive' name="can_drive"/><br>
                         Seats open?: <input type="number" id='seats' name="seats" /><br>
                         <div style="display: none">
