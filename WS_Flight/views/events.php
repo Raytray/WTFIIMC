@@ -25,13 +25,11 @@
                 });
                 $.getJSON("https://wtfiimc.appspot.com/api/schedule/?callback=?", {id: eventid})
                     .done(function(json){
-                        console.log(json);
                         var arrangement="<ul>";
                         if(json.Error != null)
                             $("#current_arrangement").html(json.Error);
                         else{
                             for( var i=0; i<json.Groups.length; i++){
-                                console.log(i);
                                 var myarray = json.Groups;
                                 arrangement +='<li>' + myarray[i].name + '<ul>';
                                 for(var j=0; j<myarray[i].riders.length; j++){
@@ -44,7 +42,7 @@
                             $("#current_arrangement").html(arrangement);
                         }
                     });
-                $("#submitevent").click(function(){
+                $("#participants_insert").submit(function(){
                     $.ajax({
                         method: 'POST',
                         url: '../php/newparticipant.php',
@@ -70,13 +68,13 @@
                 <p>
                     <b>Add a new participant to event!</b><br>
                     <form id="participants_insert">
-                        Participants name: <input name="name" type="text" /><br>
-                        Email?: <input type="email" id='email' name="email" /><br>
-                        Phone number?: <input type="text" id='phone' name="phone" /><br>
-                        Can drive?: <input type="checkbox" id='can_drive' name="can_drive" /><br>
+                        Participants name: <input name="name" type="text" required /><br>
+                        Email?: <input type="email" id='email' name="email" required /><br>
+                        Phone number?: <input type="text" id='phone' name="phone" required /><br>
+                        Can drive?: <input type="checkbox" id='can_drive' name="can_drive"/><br>
                         Seats open?: <input type="number" id='seats' name="seats" /><br>
                         <div style="display: none">
-                            Event: <select name="event_id">
+                            Event: <select name="event_id" required >
                             <?php
                               include_once('dblogin.php');
                               $db_connection = new mysqli($SERVER, $USER, $PASSWORD, $DB);
@@ -98,9 +96,9 @@
                                  ?>
                         </select></div>
                         <br>
-                        Prefered pickup start: <input id="start_datetime" name="start_datetime" type="datetime" /><br>
-                        Prefered pickup end: <input id="end_datetime" name="end_datetime" type="datetime" /><br>
-                        <button type="button" class="btn btn-defualt" id="submitevent">Add Participant!</button>
+                        Prefered pickup start: <input id="start_datetime" name="start_datetime" type="datetime" required /><br>
+                        Prefered pickup end: <input id="end_datetime" name="end_datetime" type="datetime" required /><br>
+                        <input type="submit" id="submitevent" value="Add participant!"/>
                     </form>
                 </p>
             </div>
@@ -134,7 +132,6 @@
             </p>
         </div>
                           <script>
-                  var min = 
                   $('#start_datetime').datetimepicker({
                       minDate: new Date(starttime),
                       maxDate: new Date(endtime)
