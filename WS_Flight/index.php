@@ -47,13 +47,16 @@ Flight::route('GET /api/event(/(@id))', function($id = NULL){
 
         while($row = mysqli_fetch_array($results_events)) {
 
-            $sql_participants = "SELECT name, can_drive, seats, start_datetime, end_datetime, created_datetime FROM participants WHERE event = " . $row['id'];
+            $sql_participants = "SELECT name, email, phone, location, can_drive, seats, start_datetime, end_datetime, created_datetime FROM participants WHERE event = " . $row['id'];
 
             $results_participants = mysqli_query($db_connection, $sql_participants);
             $participants = array();
 
             while($row_participants = mysqli_fetch_array($results_participants)){
                 $participant_obj = array('name' => $row_participants['name'],
+                                         'email' => $row_participants['email'],
+                                         'phone' => $row_participants['phone'],
+                                         'location' => $row_participants['location'],
                                          'can_drive' => $row_participants['can_drive'],
                                          'seats' => $row_participants['seats'],
                                          'start_datetime' => $row_participants['start_datetime'],
