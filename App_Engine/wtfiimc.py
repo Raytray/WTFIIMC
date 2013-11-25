@@ -44,8 +44,11 @@ class email_API(webapp2.RequestHandler):
         config.read('sendgrid.cfg')
         email = config.get('sendgrid', 'email')
         password = config.get('sendgrid', 'password')
-        #s = Sendgrid.Sendgrid(email,password)
-        print email, password
+        s = Sendgrid.Sendgrid(email,password)
+        message = sendgrid.Message("raytray25@gmail.com", "test email!", "this is the first test email for cucumber")
+        message.add_to("ryli721@gmail.com", "Richard Li")
+        s.web.send(message)
+        self.response.write("Message sent!")
 
 
 def get_schedule(event_id):
