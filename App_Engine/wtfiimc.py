@@ -26,7 +26,8 @@ class event_API(webapp2.RequestHandler):
 
     def get(self):
         event_id = self.request.get('id')
-        schedule = get_schedule(event_id)
+        event = get_event(event_id)
+        schedule = get_schedule(event)
 
         self.response.headers['Content-Type'] = 'application/json'
         callback = self.request.get('callback')
@@ -45,15 +46,34 @@ class email_API(webapp2.RequestHandler):
         email = config.get('sendgrid', 'email')
         password = config.get('sendgrid', 'password')
         s = sendgrid.Sendgrid(email.strip("'").strip('"'), password.strip("'").strip('"'))
-        message = sendgrid.Message("raytray25@gmail.com", "test email!", "this is the first test email for cucumber")
-        message.add_to("ryli721@gmail.com", "Richard Li")
-        s.web.send(message)
-        self.response.write("Message sent!")
+        
+        event_id = self.request.get('id')
+        event = get_event(event_id)
+        schedule = get_schedule(event)
+        
+        event_name = event['results'][0]['name']
+        event_info = event['event_info']
+        event_start = event['start_datetime']
+        event_end = event['end_datetime']
+
+        for car in schedule['Groups'][0]
+            body = "You signed up to go to {}! <br> {} <br> The event starts {} and ends {}".format(event_name, event_info, event_start, event_end)
+            body += "<br>Your driver is: {}<br> Driver phone: {}".format(car['name'],car['phone'])
+            body += "<br><ul>"
+            for rider in car['riders']
+                body += "<li>{}<ul><li>{}</li><li>{}</li></ul></li>".format(rider['name'],rider['phone'],rider['location'])
+            body += "</ul><br>Please use this email thread to coordinate pick up times, locations and other details."
+            message = sendgrid.Message("theFox@cucumber.abc", event_name + "ride arrangement", body)
+            message.add_to(car['email'],car['name'])
+            for rider in car['riders']
+                message.add_cc(rider['email'], rider['name'])
+            s.web.send(message)
+
+        self.response.write("Messages sent!")
 
 
-def get_schedule(event_id):
-    event_id = int(event_id)
-    event_resource = get_events(event_id)
+def get_schedule(event):
+    event_resource = event
     if len(event_resource['results']) <= 0:
         return json.dumps({"Error": "Event does not exist.", "Date": datetime.datetime.now().isoformat()})
 
