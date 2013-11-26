@@ -90,6 +90,7 @@
                               while($row = mysqli_fetch_array($results)) {
                                   echo 'var starttime = "' . $row['start_datetime'] . '";';
                                   echo 'var endtime = "' . $row['end_datetime'] . '";';
+                                  $endtime = $row['end_datetime'];
                                   echo '</script>';
                                   echo '<option value="' . $row['id'] . '">' . $row['name'] . '</option>';
                               }
@@ -102,6 +103,11 @@
                         <input type="submit" id="submitevent" value="Add participant!"/>
                     </form>
                 </p>
+                <br>
+                <?php
+                     if (strtotime($endtime) > time())
+                         echo '<a href="http://wtfiimc.appspot.com/api/mail/?id=' . $event_id . '"><button type="button" class="btn btn-success" style="margin-left: auto; margin-right: auto">Send out ride assignments!</button></a>';
+                ?>
             </div>
             <div class="right_box">
             <p>
