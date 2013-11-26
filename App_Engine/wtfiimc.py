@@ -44,8 +44,7 @@ class email_API(webapp2.RequestHandler):
         config.read('sendgrid.cfg')
         email = config.get('sendgrid', 'email')
         password = config.get('sendgrid', 'password')
-        s = sendgrid.Sendgrid(email.strip("'").strip('"'),
-                              password.strip("'").strip('"'))
+        s = sendgrid.Sendgrid(email, password)
 
         event_id = int(self.request.get('id'))
         schedule = get_schedule(event_id)
