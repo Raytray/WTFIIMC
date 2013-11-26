@@ -37,23 +37,26 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 public class EventActivity extends Activity {
-	
+
 	private EditText seatsOpen;
 	private EditText personName;
 	private TextView returnResults;
 	private EditText startDate;
-    private EditText endDate;
-    private EditText personEmail;
-    private EditText personPhone;
-    private EditText personLocation;
-    private TextView eventInfoResults;
-    private TextView rideInfoResults;
-    private Button submitButton;
-    private CheckBox canDrive;
-    
+	private EditText endDate;
+	private EditText personEmail;
+	private EditText personPhone;
+	private EditText personLocation;
+	private TextView eventInfoResults;
+	private TextView rideInfoResults;
+	private TextView sendRideResults;
+	private Button submitButton;
+	private Button sendRidesButton;
+	private CheckBox canDrive;
+
 	String webserviceURL = "http://plato.cs.virginia.edu/~cs4720f13cucumber/api/";
 	String pyserviceURL = "http://wtfiimc.appspot.com/api/schedule/?id=";
-	
+	String ridesURL = "http://wtfiimc.appspot.com/api/email/?id=";
+
 	@SuppressLint("NewApi")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -63,74 +66,88 @@ public class EventActivity extends Activity {
 		setupActionBar();
 		Intent intent = getIntent();
 		final String eventId = intent.getStringExtra("itemid");
-		this.getActionBar().setTitle(eventId +" " + intent.getStringExtra("itemname"));
-		
-		submitButton = (Button)findViewById(R.id.submit_person_button);
-		personName = (EditText)findViewById(R.id.person_name);
-		personEmail = (EditText)findViewById(R.id.person_email);
-		personPhone = (EditText)findViewById(R.id.person_phone);
-		personLocation = (EditText)findViewById(R.id.person_location);
-		seatsOpen = (EditText)findViewById(R.id.num_seats_open);
-		startDate = (EditText)findViewById(R.id.start_date);
-		endDate = (EditText)findViewById(R.id.end_date);
-		returnResults = (TextView)findViewById(R.id.results);
-		eventInfoResults = (TextView)findViewById(R.id.event_info_results);
-		rideInfoResults = (TextView)findViewById(R.id.ride_info_results);
-		canDrive = (CheckBox)findViewById(R.id.check_can_drive);
-		
+		this.getActionBar().setTitle(
+				eventId + " " + intent.getStringExtra("itemname"));
+
+		submitButton = (Button) findViewById(R.id.submit_person_button);
+		sendRidesButton = (Button) findViewById(R.id.send_rides);
+		personName = (EditText) findViewById(R.id.person_name);
+		personEmail = (EditText) findViewById(R.id.person_email);
+		personPhone = (EditText) findViewById(R.id.person_phone);
+		personLocation = (EditText) findViewById(R.id.person_location);
+		seatsOpen = (EditText) findViewById(R.id.num_seats_open);
+		startDate = (EditText) findViewById(R.id.start_date);
+		endDate = (EditText) findViewById(R.id.end_date);
+		returnResults = (TextView) findViewById(R.id.results);
+		eventInfoResults = (TextView) findViewById(R.id.event_info_results);
+		rideInfoResults = (TextView) findViewById(R.id.ride_info_results);
+		sendRideResults = (TextView)findViewById(R.id.ride_results);
+		canDrive = (CheckBox) findViewById(R.id.check_can_drive);
+
 		seatsOpen.setEnabled(false);
 		seatsOpen.setFocusable(false);
-		
-		String url = webserviceURL + "event/"+eventId;
+
+		String url = webserviceURL + "event/" + eventId;
 		new getEventInfo().execute(url);
 		String pyurl = pyserviceURL + eventId;
 		new getRideInfo().execute(pyurl);
 		
+		sendRidesButton.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				String rideurl = ridesURL + eventId;
+				new sendRideInfo().execute(rideurl);
+			}
+		});
+
 		submitButton.setOnClickListener(new OnClickListener() {
-        	public void onClick(View v){
-        		if(isEmpty(personName) || isEmpty(startDate) || isEmpty(endDate) || isEmpty(personEmail) || isEmpty(personPhone) || isEmpty(personLocation)) {
-        			returnResults.setText("Missing required fields");
-        		}
-        		else {
-        			String check;
-        			if(canDrive.isChecked()){
-        				check = "1";
-        			}
-        			else {
-        				check = "0";
-        			}
-        			String seats;
-        			if(isEmpty(seatsOpen))
-        				seats = "0";
-        			else
-        				seats = seatsOpen.getText().toString();
-        			new PostNewParticipant().execute(personName.getText().toString(), check, seats, eventId, startDate.getText().toString(), endDate.getText().toString(), personEmail.getText().toString(), personPhone.getText().toString(), personLocation.getText().toString());
-        		
-            		personName.setText("");
-            		personEmail.setText("");
-            		personLocation.setText("");
-            		personPhone.setText("");
-            		startDate.setText("");
-            		endDate.setText("");
-            		seatsOpen.setText("");
-            		canDrive.setChecked(false);
-            		String url = webserviceURL + "event/"+eventId;
-            		new getEventInfo().execute(url);
-            		String pyurl = pyserviceURL + eventId;
-            		new getRideInfo().execute(pyurl);
-        		}
-        	}
-        });
+			public void onClick(View v) {
+				if (isEmpty(personName) || isEmpty(startDate)
+						|| isEmpty(endDate) || isEmpty(personEmail)
+						|| isEmpty(personPhone) || isEmpty(personLocation)) {
+					returnResults.setText("Missing required fields");
+				} else {
+					String check;
+					if (canDrive.isChecked()) {
+						check = "1";
+					} else {
+						check = "0";
+					}
+					String seats;
+					if (isEmpty(seatsOpen))
+						seats = "0";
+					else
+						seats = seatsOpen.getText().toString();
+					new PostNewParticipant().execute(personName.getText()
+							.toString(), check, seats, eventId, startDate
+							.getText().toString(),
+							endDate.getText().toString(), personEmail.getText()
+									.toString(), personPhone.getText()
+									.toString(), personLocation.getText()
+									.toString());
+
+					personName.setText("");
+					personEmail.setText("");
+					personLocation.setText("");
+					personPhone.setText("");
+					startDate.setText("");
+					endDate.setText("");
+					seatsOpen.setText("");
+					canDrive.setChecked(false);
+					String url = webserviceURL + "event/" + eventId;
+					new getEventInfo().execute(url);
+					String pyurl = pyserviceURL + eventId;
+					new getRideInfo().execute(pyurl);
+				}
+			}
+		});
 	}
-	private boolean isEmpty(EditText etText) {
-        return etText.getText().toString().trim().length() == 0;
-    }
-	private class getEventInfo extends AsyncTask<String, Integer, String> {
+	private class sendRideInfo extends AsyncTask<String, Integer, String> {
 		@Override
 		protected void onPreExecute() {
 		}
+
 		@Override
-		protected String doInBackground(String... param){
+		protected String doInBackground(String... param) {
 			String url = param[0];
 			InputStream is = null;
 			String result = "";
@@ -142,7 +159,49 @@ public class EventActivity extends Activity {
 				HttpEntity entity = response.getEntity();
 				is = entity.getContent();
 				Log.d("response code", response.getStatusLine().toString());
-				
+
+			} catch (Exception e) {
+				Log.e("WTFIIMC", "Error in http connection " + e.toString());
+			}
+
+			return result;
+		}
+
+		@Override
+		protected void onProgressUpdate(Integer... ints) {
+
+		}
+
+		@Override
+		protected void onPostExecute(String result) {
+			// tells the adapter that the underlying data has changed and it
+			// needs to update the view
+			sendRideResults.setText("Emails sent out.");
+		}
+	}
+	
+	private boolean isEmpty(EditText etText) {
+		return etText.getText().toString().trim().length() == 0;
+	}
+
+	private class getEventInfo extends AsyncTask<String, Integer, String> {
+		@Override
+		protected void onPreExecute() {
+		}
+
+		@Override
+		protected String doInBackground(String... param) {
+			String url = param[0];
+			InputStream is = null;
+			String result = "";
+			// http post
+			try {
+				HttpClient httpclient = new DefaultHttpClient();
+				HttpGet httppost = new HttpGet(url);
+				HttpResponse response = httpclient.execute(httppost);
+				HttpEntity entity = response.getEntity();
+				is = entity.getContent();
+				Log.d("response code", response.getStatusLine().toString());
 
 			} catch (Exception e) {
 				Log.e("WTFIIMC", "Error in http connection " + e.toString());
@@ -150,8 +209,8 @@ public class EventActivity extends Activity {
 
 			// convert response to string
 			try {
-				BufferedReader reader = new BufferedReader(new InputStreamReader(
-						is, "iso-8859-1"), 8);
+				BufferedReader reader = new BufferedReader(
+						new InputStreamReader(is, "iso-8859-1"), 8);
 				StringBuilder sb = new StringBuilder();
 				String line = null;
 				while ((line = reader.readLine()) != null) {
@@ -162,29 +221,35 @@ public class EventActivity extends Activity {
 			} catch (Exception e) {
 				Log.e("WTFIIMC", "Error converting result " + e.toString());
 			}
-			//Log.i("Web", result);
+			// Log.i("Web", result);
 			StringBuilder jsonToString = new StringBuilder();
-			try{
-				JSONObject jObject = new JSONObject(result).getJSONArray("results").getJSONObject(0);
+			try {
+				JSONObject jObject = new JSONObject(result).getJSONArray(
+						"results").getJSONObject(0);
 				JSONArray participants = jObject.getJSONArray("participants");
-				
-				jsonToString.append("\tEvent name:" + jObject.getString("name") + "\n");
-				jsonToString.append("\tDescription:" + jObject.getString("event_info") + "\n");
-				jsonToString.append("\tStarts:" + jObject.getString("start_datetime") + "\n");
-				jsonToString.append("\tEnds:" + jObject.getString("end_datetime") + "\n\tParticipants:\n");
-				
-				
-				for(int i=0; i < participants.length(); i++){
+
+				jsonToString.append("\tEvent name:" + jObject.getString("name")
+						+ "\n");
+				jsonToString.append("\tDescription:"
+						+ jObject.getString("event_info") + "\n");
+				jsonToString.append("\tStarts:"
+						+ jObject.getString("start_datetime") + "\n");
+				jsonToString.append("\tEnds:"
+						+ jObject.getString("end_datetime")
+						+ "\n\tParticipants:\n");
+
+				for (int i = 0; i < participants.length(); i++) {
 					JSONObject participant = participants.getJSONObject(i);
-					jsonToString.append("\t\t-"+participant.getString("name")+"\n");
+					jsonToString.append("\t\t-" + participant.getString("name")
+							+ "\n");
 				}
-				
-			}
-			catch(Exception e){
-				Log.e("JSON failed", "Error: " +e.toString());
+
+			} catch (Exception e) {
+				Log.e("JSON failed", "Error: " + e.toString());
 			}
 			return jsonToString.toString();
 		}
+
 		@Override
 		protected void onProgressUpdate(Integer... ints) {
 
@@ -198,12 +263,14 @@ public class EventActivity extends Activity {
 		}
 	}
 	
+
 	private class getRideInfo extends AsyncTask<String, Integer, String> {
 		@Override
 		protected void onPreExecute() {
 		}
+
 		@Override
-		protected String doInBackground(String... param){
+		protected String doInBackground(String... param) {
 			String url = param[0];
 			InputStream is = null;
 			String result = "";
@@ -215,7 +282,6 @@ public class EventActivity extends Activity {
 				HttpEntity entity = response.getEntity();
 				is = entity.getContent();
 				Log.d("response code", response.getStatusLine().toString());
-				
 
 			} catch (Exception e) {
 				Log.e("WTFIIMC", "Error in http connection " + e.toString());
@@ -223,8 +289,8 @@ public class EventActivity extends Activity {
 
 			// convert response to string
 			try {
-				BufferedReader reader = new BufferedReader(new InputStreamReader(
-						is, "iso-8859-1"), 8);
+				BufferedReader reader = new BufferedReader(
+						new InputStreamReader(is, "iso-8859-1"), 8);
 				StringBuilder sb = new StringBuilder();
 				String line = null;
 				while ((line = reader.readLine()) != null) {
@@ -235,10 +301,11 @@ public class EventActivity extends Activity {
 			} catch (Exception e) {
 				Log.e("WTFIIMC", "Error converting result " + e.toString());
 			}
-			//Log.i("Web", result);
-			
+			// Log.i("Web", result);
+
 			return result;
 		}
+
 		@Override
 		protected void onProgressUpdate(Integer... ints) {
 
@@ -248,75 +315,81 @@ public class EventActivity extends Activity {
 		protected void onPostExecute(String result) {
 			// tells the adapter that the underlying data has changed and it
 			// needs to update the view
-			
+
 			StringBuilder jsonToString = new StringBuilder();
-			try{
+			try {
 				JSONObject jObject = new JSONObject(result);
 				String err = jObject.getString("Error");
-				if(err.equals("null")){
-					
+				if (err.equals("null")) {
+
 					JSONArray resultsArray = jObject.getJSONArray("Groups");
-					
-					for(int i=resultsArray.length()-1; i>= 0; i--){
+
+					for (int i = resultsArray.length() - 1; i >= 0; i--) {
 						JSONObject eventObject = resultsArray.getJSONObject(i);
-						
-						jsonToString.append("\t" + eventObject.getString("name")+" ("+eventObject.getString("seats")+")\n");
+
+						jsonToString.append("\t"
+								+ eventObject.getString("name") + " ("
+								+ eventObject.getString("seats") + ")\n");
 						JSONArray riders = eventObject.getJSONArray("riders");
-						for(int j=0; j < riders.length(); j++){
+						for (int j = 0; j < riders.length(); j++) {
 							JSONObject rider = riders.getJSONObject(j);
-							jsonToString.append("\t\t-" + rider.getString("name")+"\n");
+							jsonToString.append("\t\t-"
+									+ rider.getString("name") + "\n");
 						}
-						
+
 					}
-				}
-				else {
+				} else {
 					jsonToString.append("\t" + err);
 				}
-			}
-			catch(Exception e){
-				Log.e("JSON failed", "Error: " +e.toString());
+			} catch (Exception e) {
+				Log.e("JSON failed", "Error: " + e.toString());
 			}
 			rideInfoResults.setText(jsonToString.toString());
 		}
 	}
-	
-	
+
 	private class PostNewParticipant extends AsyncTask<String, Integer, String> {
 		@Override
 		protected void onPreExecute() {
 		}
+
 		@Override
-		protected String doInBackground(String... param){
+		protected String doInBackground(String... param) {
 			String url = webserviceURL + "new/participant";
 			HttpClient httpclient = new DefaultHttpClient();
 			HttpPost httppost = new HttpPost(url);
 			// http post
 			try {
 				List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
-		        nameValuePairs.add(new BasicNameValuePair("name", param[0]));
-		        nameValuePairs.add(new BasicNameValuePair("can_drive", param[1]));
-		        nameValuePairs.add(new BasicNameValuePair("seats", param[2]));
-		        nameValuePairs.add(new BasicNameValuePair("event_id", param[3]));
-		        nameValuePairs.add(new BasicNameValuePair("start_datetime", param[4]));
-		        nameValuePairs.add(new BasicNameValuePair("end_datetime", param[5]));
-		        nameValuePairs.add(new BasicNameValuePair("email", param[6]));
-		        nameValuePairs.add(new BasicNameValuePair("phone", param[7]));
-		        nameValuePairs.add(new BasicNameValuePair("location", param[8]));
-		        
-		        httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+				nameValuePairs.add(new BasicNameValuePair("name", param[0]));
+				nameValuePairs
+						.add(new BasicNameValuePair("can_drive", param[1]));
+				nameValuePairs.add(new BasicNameValuePair("seats", param[2]));
+				nameValuePairs
+						.add(new BasicNameValuePair("event_id", param[3]));
+				nameValuePairs.add(new BasicNameValuePair("start_datetime",
+						param[4]));
+				nameValuePairs.add(new BasicNameValuePair("end_datetime",
+						param[5]));
+				nameValuePairs.add(new BasicNameValuePair("email", param[6]));
+				nameValuePairs.add(new BasicNameValuePair("phone", param[7]));
+				nameValuePairs
+						.add(new BasicNameValuePair("location", param[8]));
+
+				httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 				HttpResponse response = httpclient.execute(httppost);
-				//HttpEntity entity = response.getEntity();
-				//is = entity.getContent();
-				//Log.i("params", param[1] + " "+ param[6] + " "+ param[7]);
+				// HttpEntity entity = response.getEntity();
+				// is = entity.getContent();
+				// Log.i("params", param[1] + " "+ param[6] + " "+ param[7]);
 				Log.d("response code", response.getStatusLine().toString());
-				
 
 			} catch (Exception e) {
 				Log.e("WTFIIMC", "Error in http connection " + e.toString());
 			}
-			
+
 			return "Added new participant: " + param[0];
 		}
+
 		@Override
 		protected void onProgressUpdate(Integer... ints) {
 
@@ -329,21 +402,20 @@ public class EventActivity extends Activity {
 			returnResults.setText(result);
 		}
 	}
-	
+
 	public void onCheckboxClicked(View view) {
-	    // Is the view now checked?
-	    boolean checked = ((CheckBox) view).isChecked();
-	    if(checked){
-	    	seatsOpen.setEnabled(true);
-	    	seatsOpen.setFocusableInTouchMode(true);
-	    }
-	    else {
-	    	seatsOpen.setEnabled(false);
-	    	seatsOpen.setText("");
-	    	seatsOpen.setFocusable(false);
-	    }
-	    // Check which checkbox was clicked
-	    
+		// Is the view now checked?
+		boolean checked = ((CheckBox) view).isChecked();
+		if (checked) {
+			seatsOpen.setEnabled(true);
+			seatsOpen.setFocusableInTouchMode(true);
+		} else {
+			seatsOpen.setEnabled(false);
+			seatsOpen.setText("");
+			seatsOpen.setFocusable(false);
+		}
+		// Check which checkbox was clicked
+
 	}
 
 	/**

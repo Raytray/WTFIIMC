@@ -7,7 +7,7 @@
     <string name="add_person">Add yourself:</string>
     <string name="event_info">Event Information:</string>
     <string name="prompt_seats_open">Seats open</string>
-    <string name="can_drive">Can drive?</string>
+    <string name="can_drive">Can drive? </string>
     <string name="ride_info">Rides:</string>
     <string name="list_of_events">Recently added events:</string>
     <string name="prompt_event_name">Event name</string>
@@ -17,6 +17,7 @@
     <string name="prompt_email">Email</string>
     <string name="prompt_start_date">Start date</string>
     <string name="date_to"> to </string>
+    <string name="date_from">from </string>
     <string name="prompt_event_desc">Description of event</string>
     <string name="prompt_end_date">End date</string>
     <string name="button_send">Submit</string>
@@ -24,5 +25,6 @@
     <string name="title_activity_main">MainActivity</string>
     <string name="title_activity_list_events">All Events</string>
     <string name="title_activity_event">EventActivity</string>
+    <string name="button_send_rides">Send out ride assignments!</string>
 
 </resources>
