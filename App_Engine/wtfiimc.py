@@ -25,9 +25,8 @@ class MainPage(webapp2.RequestHandler):
 class event_API(webapp2.RequestHandler):
 
     def get(self):
-        event_id = self.request.get('id')
-        event = get_event(event_id)
-        schedule = get_schedule(event)
+        event_id = int(self.request.get('id'))
+        schedule = get_schedule(event_id)
 
         self.response.headers['Content-Type'] = 'application/json'
         callback = self.request.get('callback')
@@ -45,35 +44,59 @@ class email_API(webapp2.RequestHandler):
         config.read('sendgrid.cfg')
         email = config.get('sendgrid', 'email')
         password = config.get('sendgrid', 'password')
-        s = sendgrid.Sendgrid(email.strip("'").strip('"'), password.strip("'").strip('"'))
-        
-        event_id = self.request.get('id')
-        event = get_event(event_id)
-        schedule = get_schedule(event)
-        
-        event_name = event['results'][0]['name']
+        s = sendgrid.Sendgrid(email.strip("'").strip('"'),
+                              password.strip("'").strip('"'))
+
+        event_id = int(self.request.get('id'))
+        schedule = get_schedule(event_id)
+
+        event = get_events(event_id)
+
+        event = event['results'][0]
+        event_name = event['name']
         event_info = event['event_info']
         event_start = event['start_datetime']
         event_end = event['end_datetime']
 
-        for car in schedule['Groups'][0]
-            body = "You signed up to go to {}! <br> {} <br> The event starts {} and ends {}".format(event_name, event_info, event_start, event_end)
-            body += "<br>Your driver is: {}<br> Driver phone: {}".format(car['name'],car['phone'])
-            body += "<br><ul>"
-            for rider in car['riders']
-                body += "<li>{}<ul><li>{}</li><li>{}</li></ul></li>".format(rider['name'],rider['phone'],rider['location'])
-            body += "</ul><br>Please use this email thread to coordinate pick up times, locations and other details."
-            message = sendgrid.Message("theFox@cucumber.abc", event_name + "ride arrangement", body)
-            message.add_to(car['email'],car['name'])
-            for rider in car['riders']
-                message.add_cc(rider['email'], rider['name'])
+        schedule = json.loads(schedule)
+
+        for car in schedule['Groups']:
+            body = """You signed up to go to <b>{}</b>!<br>
+{}<br>
+The event starts <i>{}</i> and ends <i>{}</i>""".format(event_name,
+                                          event_info,
+                                          datetime.datetime.strptime(event_start,
+                                                                     "%Y-%m-%d %H:%M:%S").strftime("%B %d, %Y @ %H:%M"),
+                                          datetime.datetime.strptime(event_end,
+                                                                     "%Y-%m-%d %H:%M:%S").strftime("%B %d, %Y @ %H:%M"))
+            body += """<br>
+Your driver is: <b>{}</b><br>
+Driver phone: <i>{}</i><br>
+<ul>""".format(car['name'],
+                           car['phone'])
+            for rider in car['riders']:
+                body += """
+    <li>Rider: <b>{}</b><ul>
+        <li>Phone: <i>{}</i></li>
+        <li>Pick up Location: <i>{}</i></li></ul>""".format(rider['name'],
+                  rider['phone'],
+                  rider['location'])
+            body += """</li></ul><br><br>
+Please use this email thread to coordinate pick up times, locations and other details."""
+            message = sendgrid.Message("theFox@cucumber.abc",
+                                       event_name + " ride arrangement!", body, body)
+            message.add_to(car['email'], car['name'])
+
+            for rider in car['riders']:
+                message.add_to(rider['email'], rider['name'])
+
             s.web.send(message)
 
         self.response.write("Messages sent!")
 
 
-def get_schedule(event):
-    event_resource = event
+def get_schedule(event_id):
+    event_resource = get_events(event_id)
     if len(event_resource['results']) <= 0:
         return json.dumps({"Error": "Event does not exist.", "Date": datetime.datetime.now().isoformat()})
 
