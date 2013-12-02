@@ -1,3 +1,37 @@
+body {
+    background-color: #fea;
+}
+
+@link_color: #441100;
+a {
+    color: @link_color;
+    &:hover {
+        color: @link_color - #333;
+    }
+}
+
+button, input, select[multiple], textarea {
+    background-color: #f8f8f8;
+}
+
+.navbar-default {
+    background-color: #c5683a;
+    border-color: #0af;
+    border-width: 2px;
+    .navbar-nav>li>a {
+        color: #fff;
+        &:hover {
+            color: #ddd;
+        }
+    }
+    .navbar-brand {
+        color: #fff;
+        &:hover {
+            color: #ddd;
+        }
+    }
+}
+
 .box_size {
     max-width: 400px;
     min-width: 300px;
@@ -21,6 +55,8 @@
 }
 input {
     margin: 5px auto;
+    border-style: solid;
+    border-width: 1px;
 }
 
 @media all and (max-width: 901px) {

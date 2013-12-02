@@ -45,7 +45,7 @@
             </div>
 
             <div class="right_box">
-                <p><b>Current events:</b>
+                <p><b style="color: #b55729;">Current events:</b>
                     <div id="current_events">
                         <?php
                           include_once('dblogin.php');

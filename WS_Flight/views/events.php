@@ -100,18 +100,18 @@
                         <br>
                         Prefered pickup start: <input id="start_datetime" name="start_datetime" type="datetime" required /><br>
                         Prefered pickup end: <input id="end_datetime" name="end_datetime" type="datetime" required /><br>
-                        <input type="submit" id="submitevent" value="Add participant!"/>
+                        <input type="submit" id="submitevent" value="Add participant!" class="btn-success btn"/>
                     </form>
                 </p>
                 <br>
                 <?php
                      if (strtotime($endtime) > time())
-                         echo '<a href="http://wtfiimc.appspot.com/api/mail/?id=' . $event_id . '"><button type="button" class="btn btn-success" style="margin-left: auto; margin-right: auto">Send out ride assignments!</button></a>';
+                         echo '<a href="http://wtfiimc.appspot.com/api/mail/?id=' . $event_id . '"><button type="button" class="btn btn-danger" style="margin-left: auto; margin-right: auto">Send out ride assignments!</button></a>';
                 ?>
             </div>
             <div class="right_box">
             <p>
-                <b>Current participants:</b><br>
+                <b style="color: #b55729;">Current participants:</b><br>
                 <div id="current_participants">
                 <?php
                   include_once('dblogin.php');
@@ -132,7 +132,7 @@
                 ?></div>
             </p>
             <p>
-                <b>Current arrangement</b><br>
+                <b style="color: #b55729;">Current arrangement</b><br>
                 <div id="current_arrangement">
 
                 </div>
