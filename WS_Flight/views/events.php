@@ -64,6 +64,21 @@
 
         <div class="container">
             <?php echo $navbar; ?>
+                            <?php
+                              include_once('dblogin.php');
+                              $db_connection = new mysqli($SERVER, $USER, $PASSWORD, $DB);
+                              if (mysqli_connect_error()) {
+                                  echo "Can't connect!";
+                                  echo "<br>" . mysqli_connect_error();
+                                  return null;
+                              }
+                              $sql = "SELECT name FROM events WHERE id = " . $event_id;
+                              $results = mysqli_query($db_connection, $sql);
+                              while($row = mysqli_fetch_array($results)) {
+                                  echo '<h3>' . $row['name'] . '</h3>';
+                              }
+                              mysqli_close($db_connection);
+                                 ?>
             <div class="left_box">
                 <p>
                     <b>Add a new participant to event!</b><br>
