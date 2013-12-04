@@ -72,14 +72,17 @@
                                   echo "<br>" . mysqli_connect_error();
                                   return null;
                               }
-                              $sql = "SELECT name FROM events WHERE id = " . $event_id;
+                              $sql = "SELECT name, event_info, start_datetime, end_datetime FROM events WHERE id = " . $event_id;
                               $results = mysqli_query($db_connection, $sql);
                               while($row = mysqli_fetch_array($results)) {
-                                  echo '<h3>' . $row['name'] . '</h3>';
+                                  echo '<h3 style="color: #b55729;">' . $row['name'] . '</h3>';
+                                  echo '<div class="left_box">';
+                                  echo 'Description: ' . $row['event_info'] . '<br>';
+                                  echo 'Starts: ' . $row['start_datetime'] . '<br>';
+                                  echo 'Ends: ' . $row['end_datetime'] . '<br>';
                               }
                               mysqli_close($db_connection);
                                  ?>
-            <div class="left_box">
                 <p>
                     <b>Add a new participant to event!</b><br>
                     <form id="participants_insert">
