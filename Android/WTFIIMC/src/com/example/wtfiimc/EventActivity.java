@@ -3,8 +3,11 @@ package com.example.wtfiimc;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -21,6 +24,8 @@ import org.json.JSONObject;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -33,8 +38,10 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.TimePicker;
 
 public class EventActivity extends Activity {
 
@@ -56,6 +63,35 @@ public class EventActivity extends Activity {
 	String webserviceURL = "http://plato.cs.virginia.edu/~cs4720f13cucumber/api/";
 	String pyserviceURL = "http://wtfiimc.appspot.com/api/schedule/?id=";
 	String ridesURL = "http://wtfiimc.appspot.com/api/email/?id=";
+	Calendar myCalendar = Calendar.getInstance();
+
+	DatePickerDialog.OnDateSetListener setStartDate = new DatePickerDialog.OnDateSetListener() {
+
+	    @Override
+	    public void onDateSet(DatePicker view, int year, int monthOfYear,
+	            int dayOfMonth) {
+	        // TODO Auto-generated method stub
+	        myCalendar.set(Calendar.YEAR, year);
+	        myCalendar.set(Calendar.MONTH, monthOfYear);
+	        myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+	        updateStartDate();
+	    }
+
+	};
+	
+	DatePickerDialog.OnDateSetListener setEndDate = new DatePickerDialog.OnDateSetListener() {
+
+	    @Override
+	    public void onDateSet(DatePicker view, int year, int monthOfYear,
+	            int dayOfMonth) {
+	        // TODO Auto-generated method stub
+	        myCalendar.set(Calendar.YEAR, year);
+	        myCalendar.set(Calendar.MONTH, monthOfYear);
+	        myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+	        updateEndDate();
+	    }
+
+	};
 
 	@SuppressLint("NewApi")
 	@Override
@@ -68,6 +104,10 @@ public class EventActivity extends Activity {
 		final String eventId = intent.getStringExtra("itemid");
 		this.getActionBar().setTitle(
 				eventId + " " + intent.getStringExtra("itemname"));
+		
+		TextView textViewTitle = (TextView) findViewById(R.id.add_person_text);
+		textViewTitle.setTextAppearance(this, R.style.TitleStyle);
+		
 
 		submitButton = (Button) findViewById(R.id.submit_person_button);
 		sendRidesButton = (Button) findViewById(R.id.send_rides);
@@ -86,6 +126,28 @@ public class EventActivity extends Activity {
 
 		seatsOpen.setEnabled(false);
 		seatsOpen.setFocusable(false);
+		startDate.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				new DatePickerDialog(EventActivity.this, setStartDate, myCalendar
+						.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
+						myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+			}
+		});
+		startDate.setFocusable(false);
+		endDate.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				new DatePickerDialog(EventActivity.this, setEndDate, myCalendar
+						.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
+						myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+			}
+		});
+		endDate.setFocusable(false);
 
 		String url = webserviceURL + "event/" + eventId;
 		new getEventInfo().execute(url);
@@ -141,6 +203,20 @@ public class EventActivity extends Activity {
 			}
 		});
 	}
+	private void updateStartDate() {
+
+	    String myFormat = "yy-MM-dd"; //In which you need put here
+	    SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+
+	    startDate.setText(sdf.format(myCalendar.getTime()));
+	    }
+	private void updateEndDate() {
+
+	    String myFormat = "yy-MM-dd"; //In which you need put here
+	    SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+
+	    endDate.setText(sdf.format(myCalendar.getTime()));
+	    }
 	private class sendRideInfo extends AsyncTask<String, Integer, String> {
 		@Override
 		protected void onPreExecute() {
@@ -228,19 +304,19 @@ public class EventActivity extends Activity {
 						"results").getJSONObject(0);
 				JSONArray participants = jObject.getJSONArray("participants");
 
-				jsonToString.append("\tEvent name:" + jObject.getString("name")
+				jsonToString.append("Event name:" + jObject.getString("name")
 						+ "\n");
-				jsonToString.append("\tDescription:"
+				jsonToString.append("Description:"
 						+ jObject.getString("event_info") + "\n");
-				jsonToString.append("\tStarts:"
+				jsonToString.append("Starts:"
 						+ jObject.getString("start_datetime") + "\n");
-				jsonToString.append("\tEnds:"
+				jsonToString.append("Ends:"
 						+ jObject.getString("end_datetime")
-						+ "\n\tParticipants:\n");
+						+ "\nParticipants:\n");
 
 				for (int i = 0; i < participants.length(); i++) {
 					JSONObject participant = participants.getJSONObject(i);
-					jsonToString.append("\t\t-" + participant.getString("name")
+					jsonToString.append("-" + participant.getString("name")
 							+ "\n");
 				}
 
@@ -327,19 +403,18 @@ public class EventActivity extends Activity {
 					for (int i = resultsArray.length() - 1; i >= 0; i--) {
 						JSONObject eventObject = resultsArray.getJSONObject(i);
 
-						jsonToString.append("\t"
-								+ eventObject.getString("name") + " ("
+						jsonToString.append(eventObject.getString("name") + " ("
 								+ eventObject.getString("seats") + ")\n");
 						JSONArray riders = eventObject.getJSONArray("riders");
 						for (int j = 0; j < riders.length(); j++) {
 							JSONObject rider = riders.getJSONObject(j);
-							jsonToString.append("\t\t-"
+							jsonToString.append("-"
 									+ rider.getString("name") + "\n");
 						}
 
 					}
 				} else {
-					jsonToString.append("\t" + err);
+					jsonToString.append(err);
 				}
 			} catch (Exception e) {
 				Log.e("JSON failed", "Error: " + e.toString());

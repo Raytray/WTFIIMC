@@ -24,7 +24,9 @@
     <string name="button_all_events">See All</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="title_activity_list_events">All Events</string>
+    <string name="title_main_activity">Who the FOX is in My Car?</string>
     <string name="title_activity_event">EventActivity</string>
     <string name="button_send_rides">Send out ride assignments!</string>
+    <string name="pick_date">Pick Date</string>
 
 </resources>

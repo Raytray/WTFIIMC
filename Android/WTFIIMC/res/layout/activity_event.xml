@@ -2,6 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    android:background="#FFEEAA"
     android:stretchColumns="1" >
 
     <TableRow>
@@ -13,8 +14,7 @@
 
             <ScrollView
                 android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:background="#efefef" >
+                android:layout_height="fill_parent" >
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -27,6 +27,7 @@
                     tools:context=".MainActivity" >
 
                     <TextView
+                        android:id="@+id/add_person_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/add_person" />
@@ -37,6 +38,7 @@
                         android:orientation="horizontal" >
 
                         <TextView
+                            style="@style/TextStyle"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/prompt_owner_name" />
@@ -53,6 +55,7 @@
                         android:orientation="horizontal" >
 
                         <TextView
+                            style="@style/TextStyle"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/prompt_email" />
@@ -69,6 +72,7 @@
                         android:orientation="horizontal" >
 
                         <TextView
+                            style="@style/TextStyle"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/prompt_phone" />
@@ -85,6 +89,7 @@
                         android:orientation="horizontal" >
 
                         <TextView
+                            style="@style/TextStyle"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/prompt_location" />
@@ -95,19 +100,22 @@
                             android:layout_height="wrap_content" />
                     </LinearLayout>
 
+                    <CheckBox
+                        android:id="@+id/check_can_drive"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:onClick="onCheckboxClicked"
+                        android:text="@string/can_drive"
+                        android:textColor="#b55729"
+                        android:textSize="22dp" />
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="horizontal" >
 
-                        <CheckBox
-                            android:id="@+id/check_can_drive"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:onClick="onCheckboxClicked"
-                            android:text="@string/can_drive" />
-
                         <TextView
+                            style="@style/TextStyle"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/prompt_seats_open" />
@@ -124,20 +132,23 @@
                         android:orientation="horizontal" >
 
                         <TextView
+                            style="@style/TextStyle"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:hint="@string/date_from" />
+                            android:text="@string/date_from" />
 
                         <EditText
                             android:id="@+id/start_date"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:hint="@string/prompt_start_date" />
+                        
 
                         <TextView
+                            style="@style/TextStyle"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:hint="@string/date_to" />
+                            android:text="@string/date_to" />
 
                         <EditText
                             android:id="@+id/end_date"
@@ -148,12 +159,14 @@
 
                     <Button
                         android:id="@+id/submit_person_button"
+                        style="@style/ButtonStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/button_send" />
 
                     <TextView
                         android:id="@+id/results"
+                        style="@style/TextStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
                 </LinearLayout>
@@ -180,27 +193,32 @@
                     tools:context=".MainActivity" >
 
                     <TextView
+                        style="@style/TitleStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/event_info" />
 
                     <TextView
                         android:id="@+id/event_info_results"
+                        style="@style/TextStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
 
                     <TextView
+                        style="@style/TitleStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/ride_info" />
 
                     <TextView
                         android:id="@+id/ride_info_results"
+                        style="@style/TextStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
 
                     <Button
                         android:id="@+id/send_rides"
+                        style="@style/ButtonStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:onClick="listEvents"

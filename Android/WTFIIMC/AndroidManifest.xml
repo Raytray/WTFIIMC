@@ -29,6 +29,7 @@
         <activity
             android:name="com.example.wtfiimc.ListEventsActivity"
             android:label="@string/title_activity_list_events"
+            android:screenOrientation="landscape" 
             android:parentActivityName="com.example.WTFIIMC.MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -37,6 +38,7 @@
         <activity
             android:name="com.example.wtfiimc.EventActivity"
             android:label="@string/title_activity_event"
+            android:screenOrientation="landscape" 
             android:parentActivityName="com.example.wtfiimc.ListEventsActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

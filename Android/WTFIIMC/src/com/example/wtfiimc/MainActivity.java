@@ -2,7 +2,10 @@ package com.example.wtfiimc;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.DatePickerDialog;
+import android.app.DialogFragment;
 import android.content.Intent;
 import android.view.Menu;
 import android.util.Log;
@@ -10,6 +13,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.webkit.DateSorter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.ArrayAdapter;
@@ -18,8 +22,11 @@ import android.widget.ListView;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -47,6 +54,36 @@ public class MainActivity extends Activity {
 	ListView courseList;
 	String webserviceURL = "http://plato.cs.virginia.edu/~cs4720f13cucumber/api/";
 
+	Calendar myCalendar = Calendar.getInstance();
+
+	DatePickerDialog.OnDateSetListener setStartDate = new DatePickerDialog.OnDateSetListener() {
+
+	    @Override
+	    public void onDateSet(DatePicker view, int year, int monthOfYear,
+	            int dayOfMonth) {
+	        // TODO Auto-generated method stub
+	        myCalendar.set(Calendar.YEAR, year);
+	        myCalendar.set(Calendar.MONTH, monthOfYear);
+	        myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+	        updateStartDate();
+	    }
+
+	};
+	DatePickerDialog.OnDateSetListener setEndDate = new DatePickerDialog.OnDateSetListener() {
+
+	    @Override
+	    public void onDateSet(DatePicker view, int year, int monthOfYear,
+	            int dayOfMonth) {
+	        // TODO Auto-generated method stub
+	        myCalendar.set(Calendar.YEAR, year);
+	        myCalendar.set(Calendar.MONTH, monthOfYear);
+	        myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+	        updateEndDate();
+	    }
+
+	};
+	
+	@SuppressLint("NewApi")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -62,6 +99,36 @@ public class MainActivity extends Activity {
 
 		currentEvents = (TextView) findViewById(R.id.current_events);
 		getCurrentEvents();
+		this.getActionBar().setTitle(
+				"Who the FOX is in My Car?");
+		
+		
+		TextView textViewTitle = (TextView) findViewById(R.id.add_event_title);
+		textViewTitle.setTextAppearance(this, R.style.TitleStyle);
+
+		startDate.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				new DatePickerDialog(MainActivity.this, setStartDate, myCalendar
+						.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
+						myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+			}
+		});
+		startDate.setFocusable(false);
+		endDate.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				new DatePickerDialog(MainActivity.this, setEndDate, myCalendar
+						.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
+						myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+			}
+		});
+		endDate.setFocusable(false);
+		      
 
 		submitButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
@@ -90,6 +157,21 @@ public class MainActivity extends Activity {
 			}
 		});
 	}
+
+	private void updateStartDate() {
+
+	    String myFormat = "yy-MM-dd"; //In which you need put here
+	    SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+
+	    startDate.setText(sdf.format(myCalendar.getTime()));
+	    }
+	private void updateEndDate() {
+
+	    String myFormat = "yy-MM-dd"; //In which you need put here
+	    SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+
+	    endDate.setText(sdf.format(myCalendar.getTime()));
+	    }
 
 	private class PostNewEvent extends AsyncTask<String, Integer, String> {
 		@Override

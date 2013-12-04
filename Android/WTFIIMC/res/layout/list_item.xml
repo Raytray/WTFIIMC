@@ -2,16 +2,21 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        
+        android:background="#FFEEAA"
+         >
     <TextView
         android:id="@+id/number_entry"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="#b55729"
         android:textSize="12dip" />
     <TextView
         android:id="@+id/name_entry"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="#b55729"
         android:textSize="28dip" />
        
 </LinearLayout>
